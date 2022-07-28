@@ -1,10 +1,13 @@
-const { default: axios } = require("axios");
+import axios from "axios";
+import { store } from "redux/store";
 
 const axiosInStance = axios.create({
     baseURL: "http://localhost:3000"
 });
 
-const axiosWithToken = axios.create();
+export const axiosWithToken = axios.create({
+    baseURL: "http://localhost:3000"
+});
 
 export const get = async (url, options = {}, config = {}) => {
     const res = await axiosInStance.get(url, options, config);
@@ -16,19 +19,27 @@ export const post = async (url, options = {}, config = {}) => {
     return res;
 }
 
-axiosWithToken.interceptors.request.use(request =>{
-    // console.log(request)
+export const put = async (url, options = {}, config = {}) => {
+    const res = await axiosInStance.put(url, options, config);
+    return res;
+}
+
+export const patch = async (url, options = {}, config = {}) => {
+    const res = await axiosInStance.patch(url, options, config);
+    return res;
+}
+
+export const del = async (url, options = {}, config = {}) => {
+    const res = await axiosInStance.del(url, options, config);
+    return res;
+}
+
+axiosWithToken.interceptors.request.use(request => {
+    const token = store.getState().auth.login.currentUser.access;
+    axiosWithToken.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
+    console.log(request);
     return request
 })
-// axiosInStance.interceptors.request.use(function (req) {
-//   const auth = localStorage.getItem("auth");
-//   const token = JSON.parse(auth).token;
-
-//   if (token) {
-//       axios.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
-//       return req;   
-//   }
-// });
 
 // axiosInStance.interceptors.response.use(
 //   (response) => {

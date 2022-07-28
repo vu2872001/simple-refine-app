@@ -16,13 +16,12 @@ import {
 } from "@pankod/refine";
 import { loginAuth } from "./LoginService";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export const Login = () => {
   const dispatch = useDispatch();
   const [disable, setDisable] = useState(false);
   const { mutate: login } = useLogin();
-  const {isFetching} = useSelector((state) => state.auth.login);
 
   const CardTitle = (
     <Typography level={3} className="title">

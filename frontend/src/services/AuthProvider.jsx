@@ -4,12 +4,12 @@ import { store } from "redux/store";
 export const authProvider = {
     login: (value) => {
         if (value) {
-        return Promise.resolve();
+            return Promise.resolve();
         }
 
         return Promise.reject({
-        name: "Login Failed!",
-        message: "Unauthorized user",
+            name: "Login Failed!",
+            message: "Unauthorized user",
         });
     },
     logout: () => {
