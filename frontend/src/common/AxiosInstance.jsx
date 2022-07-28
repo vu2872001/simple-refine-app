@@ -34,9 +34,9 @@ export const del = async (url, options = {}, config = {}) => {
     return res;
 }
 
-axiosWithToken.interceptors.request.use(request => {
-    const token = store.getState().auth.login.currentUser.access;
-    axiosWithToken.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
+axiosWithToken.interceptors.request.use(async request => {
+    const token = await store.getState().auth.login.currentUser.access;
+     axiosWithToken.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
     console.log(request);
     return request
 })

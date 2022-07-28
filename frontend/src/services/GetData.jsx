@@ -51,7 +51,7 @@ export const GetData = () => {
         <AntdLayout
           style={{ background: 'white', minHeight: '100vh' }}
         >
-          {/* <CustomSider /> */}
+          <CustomSider />
           <AntdLayout.Content>
             <div style={{ padding: 24, minHeight: 360 }}>
               {children}
