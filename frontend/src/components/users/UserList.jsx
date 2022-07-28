@@ -37,7 +37,6 @@ export const UsersList = () => {
       },
     ],
   });
-  console.log(tableProps);
 
   return (
     <div>
@@ -106,11 +105,11 @@ export const UsersList = () => {
               />
             )}
           /> */}
-          <Table.Column dataIndex="email" title="Email" sorter/>
-          <Table.Column dataIndex="name" title="Name" sorter/>
-          <Table.Column dataIndex="username" title="Username" sorter/>
-          <Table.Column dataIndex="age" title="Age" sorter/>
-          <Table.Column dataIndex="role" title="Role" sorter/>
+          <Table.Column dataIndex="email" title="Email"/>
+          <Table.Column dataIndex="name" title="Name"/>
+          <Table.Column dataIndex="username" title="Username"/>
+          <Table.Column dataIndex="age" title="Age"/>
+          <Table.Column dataIndex="role" title="Role"/>
           {/* <Table.Column
             dataIndex="birthday"
             title="Birthday"
