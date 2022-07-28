@@ -1,16 +1,22 @@
-import { stringify } from 'query-string';
-
+import { stringify } from "query-string";
+import { useDispatch } from "react-redux";
+import {
+  getAllUsersFailed,
+  getAllUsersStart,
+  getAllUsersSuccess,
+} from "redux/usersSlice";
+import {store} from "../redux/store";
 const mapOperator = (operator) => {
   switch (operator) {
-    case 'ne':
-    case 'gte':
-    case 'lte':
+    case "ne":
+    case "gte":
+    case "lte":
       return `_${operator}`;
-    case 'contains':
-      return '_like';
-    case 'eq':
+    case "contains":
+      return "_like";
+    case "eq":
     default:
-      return '';
+      return "";
   }
 };
 
@@ -37,10 +43,10 @@ const generateFilter = (filters) => {
   const queryFilters = {};
   if (filters) {
     filters.map((filter) => {
-      if (filter.operator !== 'or') {
+      if (filter.operator !== "or") {
         const { field, operator, value } = filter;
 
-        if (field === 'q') {
+        if (field === "q") {
           queryFilters[field] = value;
           return;
         }
@@ -62,21 +68,27 @@ export const dataProvider = (apiUrl, httpClient) => ({
   }) => {
     const url = `${apiUrl}/${resource}`;
 
-    const { current = 1, pageSize = 10 } = pagination ?? {};
+    // const { current = 1, pageSize = 10 } = pagination ?? {};
 
-    const query = hasPagination
-      ? {
-          _start: (current - 1) * pageSize,
-          _end: current * pageSize,
-        }
-      : {};
+    // const query = hasPagination
+    //   ? {
+    //       _start: (current - 1) * pageSize,
+    //       _end: current * pageSize,
+    //     }
+    //   : {};
 
     // const { data, headers } = await httpClient.get(
     //     `${url}?${stringify(query)}`,
     // );
-    const { data, headers } = await httpClient.get(`${url}`);
+    store.dispatch(getAllUsersStart());
+    try {
+      var { data, headers } = await httpClient.get(`${url}`);
+      store.dispatch(getAllUsersSuccess(data));
+    } catch (error) {
+      store.dispatch(getAllUsersFailed());
+    }
 
-    const total = +headers['x-total-count'];
+    const total = +headers["x-total-count"];
 
     return {
       data,
@@ -107,10 +119,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
   createMany: async ({ resource, variables }) => {
     const response = await Promise.all(
       variables.map(async (param) => {
-        const { data } = await httpClient.post(
-          `${apiUrl}/${resource}`,
-          param
-        );
+        const { data } = await httpClient.post(`${apiUrl}/${resource}`, param);
         return data;
       })
     );
@@ -179,15 +188,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     return apiUrl;
   },
 
-  custom: async ({
-    url,
-    method,
-    filters,
-    sort,
-    payload,
-    query,
-    headers,
-  }) => {
+  custom: async ({ url, method, filters, sort, payload, query, headers }) => {
     let httpClientUrl = `${url}?`;
 
     if (sort) {
@@ -195,8 +196,8 @@ export const dataProvider = (apiUrl, httpClient) => ({
       if (generatedSort) {
         const { _sort, _order } = generatedSort;
         const sortQuery = {
-          _sort: _sort.join(','),
-          _order: _order.join(','),
+          _sort: _sort.join(","),
+          _order: _order.join(","),
         };
         httpClientUrl = `${httpClientUrl}&${stringify(sortQuery)}`;
       }
@@ -220,12 +221,12 @@ export const dataProvider = (apiUrl, httpClient) => ({
 
     let axiosResponse;
     switch (method) {
-      case 'put':
-      case 'post':
-      case 'patch':
+      case "put":
+      case "post":
+      case "patch":
         axiosResponse = await httpClient[method](url, payload);
         break;
-      case 'delete':
+      case "delete":
         axiosResponse = await httpClient.delete(url);
         break;
       default:
