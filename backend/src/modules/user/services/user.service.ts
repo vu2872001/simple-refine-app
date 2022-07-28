@@ -86,7 +86,7 @@ export class UserService
     return await this.userRepository.updateUserPassword(id, hashedPassword);
   }
 
-  async getAllData(pageOptionsDto: PageOptionsDTO): Promise<PageDTO<User>> {
+  async getAllData(pageOptionsDto: PageOptionsDTO) {
     const users = await this.userRepository.getUserWithPage(pageOptionsDto);
     return users;
   }
