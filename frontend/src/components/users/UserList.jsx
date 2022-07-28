@@ -1,3 +1,4 @@
+
 import {
   Button,
   List,
@@ -37,6 +38,7 @@ export const UsersList = () => {
       },
     ],
   });
+  console.log(tableProps);
 
   return (
     <div>
