@@ -26,7 +26,7 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
-  async getAllUser(): Promise<User[]> {
+  async getAllUser() {
     try {
       return await this.find();
     } catch (error) {
@@ -147,40 +147,38 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async getUserWithPage(
-    pageOptionsDto: PageOptionsDTO,
-  ): Promise<PageDTO<User>> {
+  async getUserWithPage(pageOptionsDto: PageOptionsDTO) {
     try {
       const userPageOptions: UserPageOptionsDTO = new UserPageOptionsDTO(
         pageOptionsDto.page,
         pageOptionsDto.take,
       );
 
-      const userCount = await this.count({
-        // where: pageOptionsDto.where,
-        // order: pageOptionsDto.order,
-      });
+      // const userCount = await this.count({
+      //   // where: pageOptionsDto.where,
+      //   // order: pageOptionsDto.order,
+      // });
 
-      const users = await this.find({
+      return await this.find({
         // where: pageOptionsDto.where,
         // order: pageOptionsDto.order,
         skip: (userPageOptions.page - 1) * userPageOptions.take,
         take: userPageOptions.take,
       });
 
-      const serializeUser = users.map((user: User) => {
-        return SerializeUser(user);
-      });
+      // const serializeUser = users.map((user: User) => {
+      //   return SerializeUser(user);
+      // });
 
-      const dataReturn: PageDTO<User> = new PageDTO(
-        serializeUser,
-        new PageMetaDTO({
-          pageOptionsDTO: userPageOptions,
-          itemCount: userCount,
-        }),
-      );
+      // const dataReturn: PageDTO<User> = new PageDTO(
+      //   serializeUser,
+      //   new PageMetaDTO({
+      //     pageOptionsDTO: userPageOptions,
+      //     itemCount: userCount,
+      //   }),
+      // );
 
-      return dataReturn;
+      // return dataReturn;
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
