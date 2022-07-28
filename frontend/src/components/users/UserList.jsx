@@ -85,7 +85,7 @@ export const UsersList = () => {
           Sign out
         </Button>
       </div>
-      <List canCreate={identity === 'Admin'} isLoading={true}>
+      <List title="Users List" canCreate={identity === 'Admin'}>
         <Table {...tableProps} rowKey="id">
           {/* <Table.Column
             dataIndex={['avatar']}
@@ -105,11 +105,11 @@ export const UsersList = () => {
               />
             )}
           /> */}
-          <Table.Column dataIndex="email" title="Email"/>
-          <Table.Column dataIndex="name" title="Name"/>
-          <Table.Column dataIndex="username" title="Username"/>
-          <Table.Column dataIndex="age" title="Age"/>
-          <Table.Column dataIndex="role" title="Role"/>
+          <Table.Column dataIndex="email" title="Email" sorter/>
+          <Table.Column dataIndex="name" title="Name" sorter/>
+          <Table.Column dataIndex="username" title="Username" sorter/>
+          <Table.Column dataIndex="age" title="Age" sorter/>
+          <Table.Column dataIndex="role" title="Role" sorter/>
           {/* <Table.Column
             dataIndex="birthday"
             title="Birthday"
