@@ -2,51 +2,51 @@ import axios from "axios";
 import { store } from "redux/store";
 
 const axiosInStance = axios.create({
-    baseURL: "http://localhost:3000"
+  baseURL: "http://localhost:3000",
 });
 
 export const axiosWithToken = axios.create({
-    baseURL: "http://localhost:3000"
+  baseURL: "http://localhost:3000",
 });
 
 export const get = async (url, options = {}, config = {}) => {
-    const res = await axiosInStance.get(url, options, config);
-    return res;
-}
+  const res = await axiosInStance.get(url, options, config);
+  return res;
+};
 
 export const post = async (url, options = {}, config = {}) => {
-    const res = await axiosInStance.post(url, options, config);
-    return res;
-}
+  const res = await axiosInStance.post(url, options, config);
+  return res;
+};
 
 export const put = async (url, options = {}, config = {}) => {
-    const res = await axiosInStance.put(url, options, config);
-    return res;
-}
+  const res = await axiosInStance.put(url, options, config);
+  return res;
+};
 
 export const patch = async (url, options = {}, config = {}) => {
-    const res = await axiosInStance.patch(url, options, config);
-    return res;
-}
+  const res = await axiosInStance.patch(url, options, config);
+  return res;
+};
 
 export const del = async (url, options = {}, config = {}) => {
-    const res = await axiosInStance.del(url, options, config);
-    return res;
-}
+  const res = await axiosInStance.del(url, options, config);
+  return res;
+};
 
 
-axiosWithToken.interceptors.request.use(request => {
-    const token = store.getState().auth.login.currentUser.access;
-    axiosWithToken.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
-    return request
-})
+axiosWithToken.interceptors.request.use( async(request) => {
+  const token = await store.getState().auth.login.currentUser.access;
+  axiosWithToken.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  return request;
+});
 
 // axiosInStance.interceptors.response.use(
 //   (response) => {
 //       if (response.headers['Authorization'] && response.headers['Authorization'].includes('Bearer')) {
 //           return response;
 //       }
-//       const customError = { 
+//       const customError = {
 //           message: 'You are not Authorized',
 //           statusCode: 401,
 //       };
