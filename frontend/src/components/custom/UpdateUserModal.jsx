@@ -61,7 +61,7 @@ function UpdateUserModal({ data }) {
                 hideProgressBar: true,
               });
               // setDisable(false);
-              setTimeout(() => window.location.reload(true), 1000);
+              window.location.reload()
             } else {
               toast.error(
                 'Your email already exist, please register another email',
