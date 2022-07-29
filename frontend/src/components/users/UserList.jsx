@@ -24,7 +24,6 @@ export const UsersList = () => {
   const { data: permissionsData } = usePermissions();
   const { push } = useNavigation();
   const { mutate: logout, isLoading } = useLogout();
-  const { tableProps } = useTable();
 
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth.login);
