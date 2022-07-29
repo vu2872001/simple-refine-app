@@ -1,5 +1,5 @@
-import axios from "axios";
-import axiosInStance, * as request from "common/AxiosInstance";
+import axiosInStance, * as request from 'common/AxiosInstance';
+import { store } from '../../redux/store';
 import {
   deleteUserFailed,
   deleteUserStart,
@@ -7,15 +7,15 @@ import {
   updateUserFailed,
   updateUserStart,
   updateUserSuccess,
-} from "redux/usersSlice";
-import { store } from "../../redux/store";
+} from 'redux/usersSlice';
+
 export const updateUser = async (userid, value, dispatch) => {
   try {
     dispatch(updateUserStart());
     const token = store.getState().auth.login.currentUser.access;
     const config = {
       headers: {
-        "content-type": "application/json; charset=utf-8",
+        'content-type': 'application/json; charset=utf-8',
         Authorization: `Bearer ${token}`,
       },
     };
@@ -36,6 +36,7 @@ export const updateUser = async (userid, value, dispatch) => {
     dispatch(updateUserFailed());
   }
 };
+
 export const deleteUser = async (userId, dispatch) => {
   try {
     dispatch(deleteUserStart());
@@ -45,7 +46,10 @@ export const deleteUser = async (userId, dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const res = await axiosInStance.delete(`/user/delete/${userId}`, config);
+    const res = await axiosInStance.delete(
+      `/user/delete/${userId}`,
+      config
+    );
     dispatch(deleteUserSuccess());
     return res;
   } catch (error) {

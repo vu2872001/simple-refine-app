@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Grid,
   CanAccess,
@@ -12,7 +13,6 @@ import {
   useGetIdentity,
 } from '@pankod/refine';
 import { logoutAuth } from 'pages/loginpage/LoginService';
-import { useDispatch, useSelector } from 'react-redux';
 
 export const CustomSider = () => {
   const Title = useTitle();
@@ -35,14 +35,26 @@ export const CustomSider = () => {
               key={route}
               style={{
                 fontWeight: isSelected ? 'bold' : 'normal',
-                background: isSelected ? '#A8DE5D' : 'rgb(229 255 193)'
+                background: isSelected
+                  ? '#A8DE5D'
+                  : 'rgb(229 255 193)',
               }}
               icon={
                 label === 'Dashboard' ? (
-                  <Icons.HomeOutlined style={{ color: 'black', fontSize: 18, marginBottom: 4 }} />
+                  <Icons.HomeOutlined
+                    style={{
+                      color: 'black',
+                      fontSize: 18,
+                      marginBottom: 4,
+                    }}
+                  />
                 ) : (
                   <Icons.UnorderedListOutlined
-                    style={{ color: 'black', fontSize: 18, marginBottom: 2 }}
+                    style={{
+                      color: 'black',
+                      fontSize: 18,
+                      marginBottom: 2,
+                    }}
                   />
                 )
               }
@@ -53,9 +65,11 @@ export const CustomSider = () => {
               >
                 {label.split('/')[0]}
               </Link>
-              {/* {!collapsed && isSelected && (
-              <div className="ant-menu-tree-arrow" />
-            )} */}
+              {/* {!collapsed && (
+                <Icons.RightOutlined
+                  style={{ color: 'black', position: 'absolute', right: '1vw', top: '12px' }}
+                />
+              )} */}
             </Menu.Item>
           )}
         </CanAccess>
@@ -79,7 +93,10 @@ export const CustomSider = () => {
       collapsed={collapsed}
       onCollapse={(collapsed) => setCollapsed(collapsed)}
       breakpoint="lg"
-      style={{ background: 'rgb(229 255 193)' }}
+      style={{
+        background: 'rgb(229 255 193)',
+        borderRight: '1px solid rgb(229 255 193)',
+      }}
     >
       <Title collapsed={collapsed} />
       <Menu
