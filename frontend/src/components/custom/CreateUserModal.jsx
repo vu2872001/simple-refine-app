@@ -1,10 +1,10 @@
-import { Button, Modal } from "antd";
-import React from "react";
-import "react-toastify/dist/ReactToastify.min.css";
-import { toast, ToastContainer } from "react-toastify";
-import { registerUser } from "pages/registerpage/RegisterService";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Modal } from 'antd';
+import React from 'react';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { toast, ToastContainer } from 'react-toastify';
+import { registerUser } from 'pages/registerpage/RegisterService';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useLogin,
   Row,
@@ -17,21 +17,21 @@ import {
   Icons,
   useNavigation,
   useRouterContext,
-} from "@pankod/refine";
+} from '@pankod/refine';
 
 function CreateUserModal() {
   const [disable, setDisable] = useState(false);
   const dispatch = useDispatch();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  
+
   // const {isFetching} = useSelector((state) => state.auth.register)
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk =  () => {
+  const handleOk = () => {
     setIsModalVisible(false);
   };
 
@@ -48,8 +48,8 @@ function CreateUserModal() {
         title="Create User"
         visible={isModalVisible}
         onCancel={handleCancel}
-        style={{ top: "200px" }}
-        maskClosable ={false}
+        style={{ top: '200px' }}
+        maskClosable={false}
         footer={null}
       >
         <Form
@@ -59,21 +59,19 @@ function CreateUserModal() {
             setDisable(true);
             const res = await registerUser(value, dispatch);
             if (res) {
-              return Promise.resolve().then(() => {
-                toast.success("Sign Up successfully!!!", {
-                  position: "top-center",
-                  theme: "light",
-                  autoClose: 1000,
-                  hideProgressBar: true,
-                });
-                window.location.reload();
+              toast.success('Sign Up successfully!!!', {
+                position: 'top-center',
+                theme: 'light',
+                autoClose: 1000,
+                hideProgressBar: true,
               });
+              window.location.reload();
             } else {
               toast.error(
-                "Your email already exist, please register another email!!!",
+                'Your email already exist, please register another email!!!',
                 {
-                  position: "top-center",
-                  theme: "light",
+                  position: 'top-center',
+                  theme: 'light',
                   autoClose: 3000,
                   hideProgressBar: true,
                 }
@@ -92,8 +90,8 @@ function CreateUserModal() {
             rules={[
               {
                 required: true,
-                type: "email",
-                message: "The input is not valid E-mail!",
+                type: 'email',
+                message: 'The input is not valid E-mail!',
               },
             ]}
           >
@@ -106,8 +104,8 @@ function CreateUserModal() {
               prefix={
                 <Icons.MailOutlined
                   style={{
-                    color: "rgba(0,0,0,.25)",
-                    marginRight: "4px",
+                    color: 'rgba(0,0,0,.25)',
+                    marginRight: '4px',
                   }}
                 />
               }
@@ -127,8 +125,8 @@ function CreateUserModal() {
               prefix={
                 <Icons.KeyOutlined
                   style={{
-                    color: "rgba(0,0,0,.25)",
-                    marginRight: "4px",
+                    color: 'rgba(0,0,0,.25)',
+                    marginRight: '4px',
                   }}
                 />
               }
@@ -138,19 +136,19 @@ function CreateUserModal() {
           <Form.Item
             name="confirm"
             label="Confirm Password"
-            dependencies={["password"]}
+            dependencies={['password']}
             rules={[
               {
                 required: true,
-                message: "Please confirm your password!",
+                message: 'Please confirm your password!',
               },
               ({ getFieldValue }) => ({
                 validator(rule, value) {
-                  if (!value || getFieldValue("password") === value) {
+                  if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    "The two passwords that you entered do not match!"
+                    'The two passwords that you entered do not match!'
                   );
                 },
               }),
@@ -165,8 +163,8 @@ function CreateUserModal() {
               prefix={
                 <Icons.KeyOutlined
                   style={{
-                    color: "rgba(0,0,0,.25)",
-                    marginRight: "4px",
+                    color: 'rgba(0,0,0,.25)',
+                    marginRight: '4px',
                   }}
                 />
               }
