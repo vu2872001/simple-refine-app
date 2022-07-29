@@ -12,6 +12,16 @@ const usersSlice = createSlice({
             isFetching:false,
             isError:false,
             isSuccess:false,
+        },
+        updateUser:{
+            isFetching:false,
+            isError:false,
+            isSuccess:false
+        },
+        deleteUser:{
+            isFetching:false,
+            isError:false,
+            isSuccess:false
         }
     },
     reducers:{
@@ -41,12 +51,40 @@ const usersSlice = createSlice({
             state.restoreAll.isFetching = false;
             state.restoreAll.isError = true;
         },
+
+        updateUserStart:(state) =>{
+            state.updateUser.isFetching = true;
+        },
+        updateUserSuccess:(state) =>{
+            state.updateUser.isFetching = false;
+            state.updateUser.isSuccess = true;
+            state.updateUser.isError = false;
+        },
+        updateUserFailed:(state) =>{
+            state.updateUser.isFetching = false;
+            state.updateUser.isError = true;
+        },
+
+        deleteUserStart:(state) =>{
+            state.deleteUser.isFetching = true;
+        },
+        deleteUserSuccess:(state) =>{
+            state.deleteUser.isFetching = false;
+            state.deleteUser.isSuccess = true;
+            state.deleteUser.isError = false;
+        },
+        deleteUserFailed:(state) =>{
+            state.deleteUser.isFetching = false;
+            state.deleteUser.isError = true;
+        },
     }
 })
 
 export const {
     getAllUsersStart,getAllUsersFailed,getAllUsersSuccess,
-    restoreAllUsersStart,restoreAllUsersSuccess,restoreAllUsersFailed
+    restoreAllUsersStart,restoreAllUsersSuccess,restoreAllUsersFailed,
+    updateUserStart,updateUserFailed,updateUserSuccess,
+    deleteUserFailed,deleteUserStart,deleteUserSuccess
 } = usersSlice.actions
 
 export default usersSlice.reducer

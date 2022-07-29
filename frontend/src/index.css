@@ -1,90 +1,97 @@
-.Toastify__toast-container--top-center,
-.Toastify__toast-container--top-right {
-    width: 25vw !important;
-    top: 3em !important;
-}
-.Toastify__toast-body {
-    font-size: 18px;
-}
-.Toastify__toast-icon {
-    width: 40px !important;
-}
-.Toastify__toast--error {
-    border: 1px solid #EB5757;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+  .Toastify__toast-container--top-center,
+  .Toastify__toast-container--top-right {
+      width: 25vw !important;
+      top: 3em !important;
+  }
+  .Toastify__toast-body {
+      font-size: 18px;
+  }
+  .Toastify__toast-icon {
+      width: 40px !important;
+  }
+  .Toastify__toast--error {
+      border: 1px solid #EB5757;
+      border-radius: 6px !important;
+      /* background: #FAE1E2 !important; */
+  }
+  .Toastify__toast--error::after {
+    /* content : url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/OOjs_UI_icon_close.svg/480px-OOjs_UI_icon_close.svg.png');  */
+    position: absolute;
+    color: #333333;
+    font-size: 15px;
+    font-weight: 700;
+    left:265px;
+    padding-top: 14px !important;
+  }
+  .Toastify__toast--error::before {
+    /* content: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_pQS_JFIilEAmxwijrQZz1Uz3jgmMXRf_M_Ih-suQMq1Wp4uM7VVbupV--1RdpoLWwzU&usqp=CAU"); */
+    position:relative; 
+    z-index:100000;
+    left:12px;
+    top:6px;
+  }
+  .Toastify__toast--success {
+    border: 1px solid #3A9EA5 !important;
     border-radius: 6px !important;
-    /* background: #FAE1E2 !important; */
-}
-.Toastify__toast--error::after {
-  /* content : url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/OOjs_UI_icon_close.svg/480px-OOjs_UI_icon_close.svg.png');  */
-  position: absolute;
-  color: #333333;
-  font-size: 15px;
-  font-weight: 700;
-  left:265px;
-  padding-top: 14px !important;
-}
-.Toastify__toast--error::before {
-  /* content: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_pQS_JFIilEAmxwijrQZz1Uz3jgmMXRf_M_Ih-suQMq1Wp4uM7VVbupV--1RdpoLWwzU&usqp=CAU"); */
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
-}
-.Toastify__toast--success {
-  border: 1px solid #3A9EA5 !important;
-  border-radius: 6px !important;
-  /* background: #F0F9FA !important; */
-}
-.Toastify__toast--success::before {
-  /* content: url("../assets/images/svg/successToast.svg"); */
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
-}
-.Toastify__toast--success::after {
-  /* content : url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/OOjs_UI_icon_close.svg/480px-OOjs_UI_icon_close.svg.png'); */
-  position: absolute;
-  color: #333333;
-  font-size: 15px;
-  font-weight: 700;
-  left:265px;
-  padding-top: 14px !important;
-}
-.Toastify__toast--warning {
-  border: 1px solid #E78326  !important;
-  border-radius: 6px !important;
-  background: #FADFC5 !important;
-}
-.Toastify__toast--warning::before {
-  /* content: url("https://icon-library.com/images/exclamation-icon/exclamation-icon-18.jpg"); */
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
-}  
-.Toastify__toast--warning::after {
-  /* content : url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/OOjs_UI_icon_close.svg/480px-OOjs_UI_icon_close.svg.png');  */
-  position: absolute;
-  color: #E78326;
-  font-size: 15px;
-  font-weight: 700;
-  left:265px;
-  padding-top: 14px !important;
-}
-.Toastify__toast-body {
-  color: #444C63    ;
-  font-size: 16px;
-  padding-left: 20px;
-  line-height: 20px;
-  padding: 0px;
-  padding-top: 25px;
-  width: 100%;
-  font-weight: 400;
-  margin-left: 25px !important;
-} 
-.Toastify__toast > button>  svg {
-    display: none;
+    /* background: #F0F9FA !important; */
+  }
+  .Toastify__toast--success::before {
+    /* content: url("../assets/images/svg/successToast.svg"); */
+    position:relative; 
+    z-index:100000;
+    left:12px;
+    top:6px;
+  }
+  .Toastify__toast--success::after {
+    /* content : url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/OOjs_UI_icon_close.svg/480px-OOjs_UI_icon_close.svg.png'); */
+    position: absolute;
+    color: #333333;
+    font-size: 15px;
+    font-weight: 700;
+    left:265px;
+    padding-top: 14px !important;
+  }
+  .Toastify__toast--warning {
+    border: 1px solid #E78326  !important;
+    border-radius: 6px !important;
+    background: #FADFC5 !important;
+  }
+  .Toastify__toast--warning::before {
+    /* content: url("https://icon-library.com/images/exclamation-icon/exclamation-icon-18.jpg"); */
+    position:relative; 
+    z-index:100000;
+    left:12px;
+    top:6px;
+  }  
+  .Toastify__toast--warning::after {
+    /* content : url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/OOjs_UI_icon_close.svg/480px-OOjs_UI_icon_close.svg.png');  */
+    position: absolute;
+    color: #E78326;
+    font-size: 15px;
+    font-weight: 700;
+    left:265px;
+    padding-top: 14px !important;
+  }
+  .Toastify__toast-body {
+    color: #444C63    ;
+    font-size: 16px;
+    padding-left: 20px;
+    line-height: 20px;
+    padding: 0px;
+    padding-top: 25px;
+    width: 100%;
+    font-weight: 400;
+    margin-left: 25px !important;
+  } 
+  .Toastify__toast > button>  svg {
+      display: none;
+  }
 }
 
 .ant-menu-item:hover {
