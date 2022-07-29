@@ -1,9 +1,8 @@
-import 'react-toastify/dist/ReactToastify.min.css';
-import { toast, ToastContainer } from 'react-toastify';
 import { registerUser } from './RegisterService';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import 'react-toastify/dist/ReactToastify.min.css';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Row,
   Col,

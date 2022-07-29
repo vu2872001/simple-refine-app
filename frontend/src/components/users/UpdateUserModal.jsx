@@ -1,35 +1,18 @@
 import { Button, Modal } from 'antd';
-import React from 'react';
-import 'react-toastify/dist/ReactToastify.min.css';
-import { toast, ToastContainer } from 'react-toastify';
-import { registerUser } from 'pages/registerpage/RegisterService';
+import { Form, Input, Icons, EditButton } from '@pankod/refine';
+import { toast } from 'react-toastify';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Form,
-  Input,
-  Icons,
-  EditButton,
-  useNavigation,
-} from '@pankod/refine';
-import { updateUser } from 'components/users/UserListService';
+import { useDispatch } from 'react-redux';
+import { updateUser } from 'components/users/UserService';
 
 function UpdateUserModal({ data }) {
   const [disable, setDisable] = useState(false);
   const dispatch = useDispatch();
 
-  const { replace } = useNavigation();
-
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // const {isFetching} = useSelector((state) => state.auth.register)
 
   const showModal = () => {
     setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
@@ -60,8 +43,7 @@ function UpdateUserModal({ data }) {
                 autoClose: 1000,
                 hideProgressBar: true,
               });
-              // setDisable(false);
-              window.location.reload()
+              setTimeout(() => window.location.reload(), 500);
             } else {
               toast.error(
                 'Your email already exist, please register another email',
