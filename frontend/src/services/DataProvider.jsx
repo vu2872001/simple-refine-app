@@ -1,3 +1,4 @@
+
 import {store} from "../redux/store";
 import { stringify } from "query-string";
 import {
@@ -81,18 +82,23 @@ export const dataProvider = (apiUrl, httpClient) => ({
     // const { data, headers } = await httpClient.get(
     //     `${url}?${stringify(query)}`,
     // );
-
+    
     store.dispatch(getAllUsersStart());
     try {
-      var { data, headers } = await httpClient.get(`${url}`);
+      const token = store.getState().auth.login.currentUser.access;
+      const config ={
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      }
+      var { data } = await httpClient.get(`${url}`,config);
       store.dispatch(getAllUsersSuccess(data));
     } catch (error) {
       store.dispatch(getAllUsersFailed());
     }
-    const total = +headers["x-total-count"];
+    // const total = +headers["x-total-count"];
     return {
       data,
-      total
     };
   },
 
@@ -100,7 +106,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     const { data } = await httpClient.get(
       `${apiUrl}/${resource}?${stringify({ id: ids })}`
     );
-
+      
     return {
       data,
     };

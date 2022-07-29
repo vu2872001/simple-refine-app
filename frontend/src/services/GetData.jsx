@@ -1,4 +1,4 @@
-import { axiosWithToken } from 'common/AxiosInstance';
+
 import routerProvider from '@pankod/refine-react-router';
 import { authProvider } from './AuthProvider';
 import { dataProvider } from './DataProvider';
@@ -12,6 +12,7 @@ import { Login } from 'pages/loginpage/Login';
 import { Register } from 'pages/registerpage/Register';
 import { UsersList, CreateUser, EditUser } from 'components/users';
 import { CreatePost, EditPost, Posts } from 'components/posts';
+import axios from 'axios';
 
 export const GetData = () => {
   const API_URL = 'http://localhost:3000';
@@ -33,7 +34,7 @@ export const GetData = () => {
         ],
       }}
       notificationProvider={notificationProvider}
-      dataProvider={dataProvider(API_URL, axiosWithToken)}
+      dataProvider={dataProvider(API_URL, axios)}
       resources={[
         {
           name: 'user/all',
