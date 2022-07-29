@@ -7,7 +7,7 @@ export const authProvider = {
     if (value) {
       return Promise.resolve().then(() => {
         setTimeout(() => {
-          toast.success('Sign In successfully!!!', {
+          toast.success('Sign In successfully', {
             position: 'top-center',
             theme: 'light',
             autoClose: 1000,
@@ -25,7 +25,7 @@ export const authProvider = {
   logout: () => {
     return Promise.resolve().then(() => {
       setTimeout(() => {
-        toast.success('Sign Out successfully!!!', {
+        toast.success('Sign Out successfully', {
           position: 'top-center',
           theme: 'light',
           autoClose: 1000,

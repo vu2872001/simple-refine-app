@@ -31,10 +31,6 @@ function CreateUserModal() {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -59,7 +55,7 @@ function CreateUserModal() {
             setDisable(true);
             const res = await registerUser(value, dispatch);
             if (res) {
-              toast.success('Sign Up successfully!!!', {
+              toast.success('Create user successfully', {
                 position: 'top-center',
                 theme: 'light',
                 autoClose: 1000,
@@ -68,7 +64,7 @@ function CreateUserModal() {
               window.location.reload();
             } else {
               toast.error(
-                'Your email already exist, please register another email!!!',
+                'Your email already exist, please register another email',
                 {
                   position: 'top-center',
                   theme: 'light',

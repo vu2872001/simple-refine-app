@@ -1,12 +1,18 @@
-import { Button, Modal } from "antd";
-import React from "react";
-import "react-toastify/dist/ReactToastify.min.css";
-import { toast, ToastContainer } from "react-toastify";
-import { registerUser } from "pages/registerpage/RegisterService";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Form, Input, Icons, EditButton, useNavigation } from "@pankod/refine";
-import { updateUser } from "components/users/UserListService";
+import { Button, Modal } from 'antd';
+import React from 'react';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { toast, ToastContainer } from 'react-toastify';
+import { registerUser } from 'pages/registerpage/RegisterService';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Form,
+  Input,
+  Icons,
+  EditButton,
+  useNavigation,
+} from '@pankod/refine';
+import { updateUser } from 'components/users/UserListService';
 
 function UpdateUserModal({ data }) {
   const [disable, setDisable] = useState(false);
@@ -37,7 +43,7 @@ function UpdateUserModal({ data }) {
         title="Update User Info"
         visible={isModalVisible}
         onCancel={handleCancel}
-        style={{ top: "200px" }}
+        style={{ top: '200px' }}
         maskClosable={false}
         footer={null}
       >
@@ -48,23 +54,20 @@ function UpdateUserModal({ data }) {
             setDisable(true);
             const res = await updateUser(data.id, value, dispatch);
             if (res) {
-              return Promise.resolve().then(() => {
-                toast.success("Update successfully!!!", {
-                  position: "top-center",
-                  theme: "light",
-                  autoClose: 1000,
-                  hideProgressBar: true,
-                });
-                setTimeout(() => setDisable(false), 1000);
-                window.location.reload(true)
+              toast.success('Update successfully', {
+                position: 'top-center',
+                theme: 'light',
+                autoClose: 1000,
+                hideProgressBar: true,
               });
-
+              // setDisable(false);
+              setTimeout(() => window.location.reload(true), 1000);
             } else {
               toast.error(
-                "Your email already exist, please register another email!!!",
+                'Your email already exist, please register another email',
                 {
-                  position: "top-center",
-                  theme: "light",
+                  position: 'top-center',
+                  theme: 'light',
                   autoClose: 3000,
                   hideProgressBar: true,
                 }
@@ -83,8 +86,8 @@ function UpdateUserModal({ data }) {
             rules={[
               {
                 required: true,
-                type: "email",
-                message: "The input is not valid E-mail!",
+                type: 'email',
+                message: 'The input is not valid E-mail!',
               },
             ]}
             initialValue={data.email}
@@ -98,8 +101,8 @@ function UpdateUserModal({ data }) {
               prefix={
                 <Icons.MailOutlined
                   style={{
-                    color: "rgba(0,0,0,.25)",
-                    marginRight: "4px",
+                    color: 'rgba(0,0,0,.25)',
+                    marginRight: '4px',
                   }}
                 />
               }
@@ -120,8 +123,8 @@ function UpdateUserModal({ data }) {
               prefix={
                 <Icons.UserOutlined
                   style={{
-                    color: "rgba(0,0,0,.25)",
-                    marginRight: "4px",
+                    color: 'rgba(0,0,0,.25)',
+                    marginRight: '4px',
                   }}
                 />
               }
@@ -141,8 +144,8 @@ function UpdateUserModal({ data }) {
               prefix={
                 <Icons.UserOutlined
                   style={{
-                    color: "rgba(0,0,0,.25)",
-                    marginRight: "4px",
+                    color: 'rgba(0,0,0,.25)',
+                    marginRight: '4px',
                   }}
                 />
               }
@@ -161,10 +164,10 @@ function UpdateUserModal({ data }) {
               min={1}
               max={150}
               prefix={
-                <Icons.CalendarOutlined 
+                <Icons.CalendarOutlined
                   style={{
-                    color: "rgba(0,0,0,.25)",
-                    marginRight: "4px",
+                    color: 'rgba(0,0,0,.25)',
+                    marginRight: '4px',
                   }}
                 />
               }
