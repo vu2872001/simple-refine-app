@@ -1,11 +1,11 @@
+import {store} from "../redux/store";
 import { stringify } from "query-string";
-import { useDispatch } from "react-redux";
 import {
   getAllUsersFailed,
   getAllUsersStart,
   getAllUsersSuccess,
 } from "redux/usersSlice";
-import {store} from "../redux/store";
+
 const mapOperator = (operator) => {
   switch (operator) {
     case "ne":
@@ -88,9 +88,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     } catch (error) {
       store.dispatch(getAllUsersFailed());
     }
-
     const total = 1//+headers["x-total-count"];
-
     return {
       data,
       
