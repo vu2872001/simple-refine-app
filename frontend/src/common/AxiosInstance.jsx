@@ -34,6 +34,7 @@ export const del = async (url, options = {}, config = {}) => {
     return res;
 }
 
+
 axiosWithToken.interceptors.request.use(request => {
     const token = store.getState().auth.login.currentUser.access;
     axiosWithToken.defaults.headers.common['Authorization'] =  `Bearer ${token}`;

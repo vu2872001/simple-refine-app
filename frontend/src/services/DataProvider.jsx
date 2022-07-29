@@ -80,6 +80,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     // const { data, headers } = await httpClient.get(
     //     `${url}?${stringify(query)}`,
     // );
+
     store.dispatch(getAllUsersStart());
     try {
       var { data, headers } = await httpClient.get(`${url}`);
@@ -87,13 +88,10 @@ export const dataProvider = (apiUrl, httpClient) => ({
     } catch (error) {
       store.dispatch(getAllUsersFailed());
     }
-
-    console.log(headers);
-    const total = 1// +headers["x-total-count"];
-
+    const total = 1//+headers["x-total-count"];
     return {
       data,
-      total,
+      
     };
   },
 
