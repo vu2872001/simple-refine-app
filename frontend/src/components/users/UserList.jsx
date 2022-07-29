@@ -12,19 +12,18 @@ import {
   useGetIdentity,
   useNavigation,
 } from '@pankod/refine';
-import { useDispatch, useSelector } from "react-redux";
-import { logoutAuth } from "pages/loginpage/LoginService";
-import CreateUserModal from "components/custom/CreateUserModal";
-import UpdateUserModal from "components/custom/UpdateUserModal";
-import { deleteUser } from "./UserListService";
-import DeleteModal from "components/custom/DeleteModal";
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutAuth } from 'pages/loginpage/LoginService';
+import CreateUserModal from 'components/custom/CreateUserModal';
+import UpdateUserModal from 'components/custom/UpdateUserModal';
+import { deleteUser } from './UserListService';
+import DeleteModal from 'components/custom/DeleteModal';
 
 export const UsersList = () => {
   const { data: identity } = useGetIdentity();
   const { data: permissionsData } = usePermissions();
   const { push } = useNavigation();
   const { mutate: logout, isLoading } = useLogout();
-  const { tableProps } = useTable();
 
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth.login);
@@ -34,35 +33,35 @@ export const UsersList = () => {
     logout();
   };
 
-  if(identity!=="Admin") push("/403");
+  if (identity !== 'Admin') push('/403');
 
   const { tableProps } = useTable({
     initialSorter: [
       {
-        field: "id",
-        order: "asc",
+        field: 'id',
+        order: 'asc',
       },
     ],
   });
-  
+
   return (
     <div>
       <Typography
         style={{
-          textAlign: "center",
-          fontSize: "2rem",
+          textAlign: 'center',
+          fontSize: '2rem',
           fontWeight: 600,
-          padding: "1rem",
-          color: "#67be23",
+          padding: '1rem',
+          color: '#67be23',
         }}
       >
         Simple Users Management
       </Typography>
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "0 1.5rem",
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '0 1.5rem',
         }}
       >
         {/* <Typography
@@ -96,22 +95,27 @@ export const UsersList = () => {
         <Table {...tableProps} rowKey="id">
           <Table.Column dataIndex="email" title="Email" sorter />
           <Table.Column dataIndex="name" title="Name" sorter />
-          <Table.Column dataIndex="username" title="Username" sorter />
+          <Table.Column
+            dataIndex="username"
+            title="Username"
+            sorter
+          />
           <Table.Column dataIndex="age" title="Age" sorter />
           <Table.Column dataIndex="role" title="Role" sorter />
-          { <Table.Column
-            title="Actions"
-            dataIndex="actions"
-            render={(_, record) => (
-              <Space>
-                <UpdateUserModal data={record}/>
-                {permissionsData?.includes("DeleteUser") && (
-                  <DeleteModal data={record}/>
-                 
-                )}
-              </Space>
-            )}
-          /> }
+          {
+            <Table.Column
+              title="Actions"
+              dataIndex="actions"
+              render={(_, record) => (
+                <Space>
+                  <UpdateUserModal data={record} />
+                  {permissionsData?.includes('DeleteUser') && (
+                    <DeleteModal data={record} />
+                  )}
+                </Space>
+              )}
+            />
+          }
         </Table>
       </List>
     </div>

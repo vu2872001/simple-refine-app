@@ -35,7 +35,7 @@ export const CustomSider = () => {
               key={route}
               style={{
                 fontWeight: isSelected ? 'bold' : 'normal',
-                background: isSelected ? '#A8DE5D' : 'rgb(193, 255, 107)'
+                background: isSelected ? '#A8DE5D' : 'rgb(229 255 193)'
               }}
               icon={
                 label === 'Dashboard' ? (
