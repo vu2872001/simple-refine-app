@@ -33,6 +33,7 @@ export class UserService
   async update(id: number, updateData: UpdateUserDTO): Promise<User> {
     try {
       const userWithId = await this.getDataById(id);
+      console.log(userWithId);
 
       if (Object.keys(userWithId).length === 0) {
         throw new NotFoundException(`Not found user with id: ${id}`);
@@ -40,14 +41,12 @@ export class UserService
         const userWithEmail = await this.userRepository.getUserByEmail(
           updateData.email,
         );
-
-        if (userWithEmail.id !== id) {
+        if (userWithEmail && userWithEmail.id !== id) {
           throw new BadRequestException(
             `Email: ${updateData.email} exist. You can not change your mail to this mail`,
           );
         }
       }
-
       const updatedUser = await this.userRepository.updateUser(id, updateData);
       await this.userRepository.save(updatedUser);
       return SerializeUser(updatedUser);

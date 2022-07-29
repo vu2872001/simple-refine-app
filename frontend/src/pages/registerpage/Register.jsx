@@ -63,7 +63,7 @@ export const Register = () => {
                   if (res) {
                     return Promise.resolve(push('/login')).then(
                       () => {
-                        toast.success('Sign Up successfully!!!', {
+                        toast.success('Sign Up successfully', {
                           position: 'top-center',
                           theme: 'light',
                           autoClose: 1000,
@@ -73,7 +73,7 @@ export const Register = () => {
                     );
                   } else {
                     toast.error(
-                      'Your email already exist, please register another email!!!',
+                      'Your email already exist, please register another email',
                       {
                         position: 'top-center',
                         theme: 'light',

@@ -63,7 +63,7 @@ export const Login = () => {
                     login(res);
                   } else {
                     toast.error(
-                      "Email or Password aren't correct!!!",
+                      "Email or Password aren't correct",
                       {
                         position: 'top-center',
                         theme: 'light',
