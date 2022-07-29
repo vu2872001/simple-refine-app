@@ -2,7 +2,6 @@ import {
   Button,
   List,
   Table,
-  ImageField,
   Typography,
   EditButton,
   Space,
@@ -11,10 +10,9 @@ import {
   useLogout,
   usePermissions,
   useGetIdentity,
-  DateField,
-} from "@pankod/refine";
-import { useDispatch, useSelector } from "react-redux";
-import { logoutAuth } from "pages/loginpage/LoginService";
+} from '@pankod/refine';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutAuth } from 'pages/loginpage/LoginService';
 
 export const UsersList = () => {
   const { data: identity } = useGetIdentity();
@@ -85,38 +83,13 @@ export const UsersList = () => {
       </div>
       <List title="Users List" canCreate={identity === "Admin"}>
         <Table {...tableProps} rowKey="id">
-          {/* <Table.Column
-            dataIndex={['avatar']}
-            title="Avatar"
-            render={(_, record) => (
-              <ImageField
-                value={
-                  record.avatar
-                    ? record.avatar[0].url
-                    : 'https://pbs.twimg.com/media/Cimc3oVWkAIMye1.jpg'
-                }
-                title={
-                  record.avatar ? record.avatar[0].name : record.name
-                }
-                width={60}
-                height={60}
-              />
-            )}
-          /> */}
+
           <Table.Column dataIndex="email" title="Email" sorter />
           <Table.Column dataIndex="name" title="Name" sorter />
           <Table.Column dataIndex="username" title="Username" sorter />
           <Table.Column dataIndex="age" title="Age" sorter />
           <Table.Column dataIndex="role" title="Role" sorter />
           {/* <Table.Column
-            dataIndex="birthday"
-            title="Birthday"
-            sorter
-            render={(_, record) => (
-              <DateField value={record.birthday} />
-            )}
-          /> */}
-          <Table.Column
             title="Actions"
             dataIndex="actions"
             render={(_, record) => (
@@ -131,7 +104,7 @@ export const UsersList = () => {
                 )}
               </Space>
             )}
-          />
+          /> */}
         </Table>
       </List>
     </div>
