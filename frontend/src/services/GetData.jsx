@@ -1,18 +1,20 @@
-
+import axios from 'axios';
 import routerProvider from '@pankod/refine-react-router';
 import { authProvider } from './AuthProvider';
 import { dataProvider } from './DataProvider';
 import { notificationProvider } from './NotificationProvider';
 
-import "react-toastify/dist/ReactToastify.min.css";
+import PrimasLogo from "assets/images/PrimasLogo.png"
+import 'react-toastify/dist/ReactToastify.min.css';
+import { Error404, Error403 } from 'components/error';
 import { ToastContainer } from 'react-toastify';
 import { AntdLayout, Refine } from '@pankod/refine';
 import { CustomSider } from 'components/custom';
+import HomePage from 'pages/homepage/HomePage';
 import { Login } from 'pages/loginpage/Login';
 import { Register } from 'pages/registerpage/Register';
 import { UsersList, CreateUser, EditUser } from 'components/users';
 import { CreatePost, EditPost, Posts } from 'components/posts';
-import axios from 'axios';
 
 export const GetData = () => {
   const API_URL = 'http://localhost:3000';
@@ -30,6 +32,10 @@ export const GetData = () => {
           {
             children: <Login />,
             path: '/login',
+          },
+          {
+            children: <Error403 />,
+            path: '/403',
           },
         ],
       }}
@@ -49,6 +55,8 @@ export const GetData = () => {
         //   edit: EditPost,
         // },
       ]}
+      catchAll={<Error404/>}
+      DashboardPage={HomePage}
       LoginPage={Login}
       Layout={({ children }) => (
         <AntdLayout
@@ -56,13 +64,18 @@ export const GetData = () => {
         >
           <CustomSider />
           <AntdLayout.Content>
-            <div style={{ padding: 24, minHeight: 360 }}>
+            <div style={{ padding: 24, minHeight: '100vh' }}>
               {children}
             </div>
           </AntdLayout.Content>
-          <ToastContainer/>
+          <ToastContainer />
         </AntdLayout>
       )}
+      Title={({ collapsed }) => (
+        <div>
+            {!collapsed && <img style={{width: "200px", padding: "20px 10px 20px 0"}} src={PrimasLogo} alt="Logo" />}
+        </div>
+    )}
     />
   );
 };

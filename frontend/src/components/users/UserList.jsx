@@ -10,7 +10,8 @@ import {
   useLogout,
   usePermissions,
   useGetIdentity,
-} from "@pankod/refine";
+  useNavigation,
+} from '@pankod/refine';
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAuth } from "pages/loginpage/LoginService";
 import CreateUserModal from "components/custom/CreateUserModal";
@@ -21,7 +22,9 @@ import DeleteModal from "components/custom/DeleteModal";
 export const UsersList = () => {
   const { data: identity } = useGetIdentity();
   const { data: permissionsData } = usePermissions();
+  const { push } = useNavigation();
   const { mutate: logout, isLoading } = useLogout();
+  const { tableProps } = useTable();
 
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth.login);
@@ -31,6 +34,8 @@ export const UsersList = () => {
     logout();
   };
 
+  if(identity!=="Admin") push("/403");
+
   const { tableProps } = useTable({
     initialSorter: [
       {
@@ -39,6 +44,7 @@ export const UsersList = () => {
       },
     ],
   });
+  
   return (
     <div>
       <Typography
@@ -59,7 +65,7 @@ export const UsersList = () => {
           padding: "0 1.5rem",
         }}
       >
-        <Typography
+        {/* <Typography
           style={{
             fontSize: "1.2rem",
           }}
@@ -83,7 +89,7 @@ export const UsersList = () => {
           onClick={handleLogout}
         >
           Sign out
-        </Button>
+        </Button> */}
       </div>
       <List title="Users List">
         <CreateUserModal />

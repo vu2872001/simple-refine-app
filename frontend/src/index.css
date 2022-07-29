@@ -93,3 +93,18 @@
       display: none;
   }
 }
+
+.ant-menu-item:hover {
+  background-color: #A8DE5D !important;
+}
+.ant-tooltip-inner,
+.ant-tooltip-inner a {
+  color: white !important;
+  font-size: 18px;
+}
+.ant-layout-sider-trigger {
+  background-color: #8fdc25 !important;
+}
+.ant-layout-sider-trigger:hover {  
+  background-color: #67be23 !important;
+}

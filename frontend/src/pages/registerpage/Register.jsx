@@ -29,7 +29,7 @@ export const Register = () => {
   );
 
   const { Link } = useRouterContext();
-  const { replace } = useNavigation();
+  const { push } = useNavigation();
 
   return (
     <AntdLayout className="layout">
@@ -61,7 +61,7 @@ export const Register = () => {
                   setDisable(true);
                   const res = await registerUser(value, dispatch);
                   if (res) {
-                    return Promise.resolve(replace('login')).then(
+                    return Promise.resolve(push('/login')).then(
                       () => {
                         toast.success('Sign Up successfully!!!', {
                           position: 'top-center',
