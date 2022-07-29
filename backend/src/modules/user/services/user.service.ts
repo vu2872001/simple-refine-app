@@ -41,9 +41,9 @@ export class UserService
           updateData.email,
         );
 
-        if (userWithEmail) {
+        if (userWithEmail.id !== id) {
           throw new BadRequestException(
-            `Email: ${updateData.email} exist. You can noy change your mail to this mail`,
+            `Email: ${updateData.email} exist. You can not change your mail to this mail`,
           );
         }
       }

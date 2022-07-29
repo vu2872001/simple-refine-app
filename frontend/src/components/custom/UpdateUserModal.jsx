@@ -159,9 +159,9 @@ function UpdateUserModal({ data }) {
               placeholder="age"
               size="large"
               min={1}
-              max={100}
+              max={150}
               prefix={
-                <Icons.FieldBinaryOutlined
+                <Icons.CalendarOutlined 
                   style={{
                     color: "rgba(0,0,0,.25)",
                     marginRight: "4px",
