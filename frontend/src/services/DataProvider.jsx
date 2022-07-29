@@ -1,12 +1,12 @@
-import axios from "axios";
+
+import {store} from "../redux/store";
 import { stringify } from "query-string";
-import { useDispatch } from "react-redux";
 import {
   getAllUsersFailed,
   getAllUsersStart,
   getAllUsersSuccess,
 } from "redux/usersSlice";
-import {store} from "../redux/store";
+
 const mapOperator = (operator) => {
   switch (operator) {
     case "ne":
@@ -67,6 +67,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     hasPagination = true,
     pagination = { current: 1, pageSize: 10 },
   }) => {
+    // debugger
     const url = `${apiUrl}/${resource}`;
 
     // const { current = 1, pageSize = 10 } = pagination ?? {};
@@ -95,9 +96,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     } catch (error) {
       store.dispatch(getAllUsersFailed());
     }
-
-    const total = 1//+headers["x-total-count"];
-
+    // const total = +headers["x-total-count"];
     return {
       data,
     };

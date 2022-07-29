@@ -4,6 +4,8 @@ import { authProvider } from './AuthProvider';
 import { dataProvider } from './DataProvider';
 import { notificationProvider } from './NotificationProvider';
 
+import "react-toastify/dist/ReactToastify.min.css";
+import { ToastContainer } from 'react-toastify';
 import { AntdLayout, Refine } from '@pankod/refine';
 import { CustomSider } from 'components/custom';
 import { Login } from 'pages/loginpage/Login';
@@ -58,6 +60,7 @@ export const GetData = () => {
               {children}
             </div>
           </AntdLayout.Content>
+          <ToastContainer/>
         </AntdLayout>
       )}
     />
