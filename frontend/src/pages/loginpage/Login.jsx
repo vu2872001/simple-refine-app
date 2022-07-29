@@ -60,15 +60,10 @@ export const Login = () => {
                   toast.dismiss();
                   setDisable(true);
                   const res = await loginAuth(value, dispatch);
-                  if (res) {                  
-                    toast.success("Sign In successfully!!!", {
-                      position: "top-center",
-                      theme: "light",
-                      autoClose: false,
-                    });
-                    setTimeout(() => login(res), 1000);
+                  if (res) {
+                    login(res)
                   } else {
-                    toast.error("Email or password aren't correct!!!", {
+                    toast.error("Email or Password aren't correct!!!", {
                       position: "top-center",
                       theme: "light",
                       autoClose: 3000,

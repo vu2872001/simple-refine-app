@@ -39,7 +39,7 @@ export const CustomSider= () => {
                         }}
                         icon={<Icons.UnorderedListOutlined />}
                     >
-                        <Link to={route}>{label}</Link>
+                        <Link to={route}>{label.split("/")[0]}</Link>
                         {!collapsed && isSelected && (
                             <div className="ant-menu-tree-arrow" />
                         )}

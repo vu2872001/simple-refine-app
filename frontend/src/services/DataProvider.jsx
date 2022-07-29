@@ -66,6 +66,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     hasPagination = true,
     pagination = { current: 1, pageSize: 10 },
   }) => {
+    // debugger
     const url = `${apiUrl}/${resource}`;
 
     // const { current = 1, pageSize = 10 } = pagination ?? {};
@@ -88,10 +89,10 @@ export const dataProvider = (apiUrl, httpClient) => ({
     } catch (error) {
       store.dispatch(getAllUsersFailed());
     }
-    const total = 1//+headers["x-total-count"];
+    const total = +headers["x-total-count"];
     return {
       data,
-      
+      total
     };
   },
 
