@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
+import { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import {
-  useLogin,
   Row,
   Col,
   AntdLayout,
@@ -12,11 +11,12 @@ import {
   Input,
   Button,
   Icons,
+  useLogin,
   useRouterContext,
-} from "@pankod/refine";
-import { loginAuth } from "./LoginService";
+} from '@pankod/refine';
+import { loginAuth } from './LoginService';
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -31,22 +31,22 @@ export const Login = () => {
   const { Link } = useRouterContext();
 
   return (
-    <AntdLayout className="layout">
+    <AntdLayout>
       <Row
         justify="center"
         align="middle"
         style={{
-          height: "100vh",
+          height: '100vh',
         }}
       >
         <Col xs={6}>
           <Typography
             style={{
-              textAlign: "center",
-              fontSize: "3rem",
+              textAlign: 'center',
+              fontSize: '3rem',
               fontWeight: 600,
-              padding: "1rem",
-              color: "#67be23",
+              padding: '1rem',
+              color: '#67be23',
             }}
           >
             Login
@@ -60,14 +60,17 @@ export const Login = () => {
                   setDisable(true);
                   const res = await loginAuth(value, dispatch);
                   if (res) {
-                    login(res)
+                    login(res);
                   } else {
-                    toast.error("Email or Password aren't correct!!!", {
-                      position: "top-center",
-                      theme: "light",
-                      autoClose: 3000,
-                      hideProgressBar: true,
-                    });
+                    toast.error(
+                      "Email or Password aren't correct!!!",
+                      {
+                        position: 'top-center',
+                        theme: 'light',
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                      }
+                    );
                     setTimeout(() => setDisable(false), 1000);
                   }
                 }}
@@ -82,8 +85,8 @@ export const Login = () => {
                   rules={[
                     {
                       required: true,
-                      type: "email",
-                      message: "The input is not valid E-mail!",
+                      type: 'email',
+                      message: 'The input is not valid E-mail!',
                     },
                   ]}
                 >
@@ -95,7 +98,10 @@ export const Login = () => {
                     maxLength={50}
                     prefix={
                       <Icons.MailOutlined
-                        style={{ color: "rgba(0,0,0,.25)", marginRight: "4px" }}
+                        style={{
+                          color: 'rgba(0,0,0,.25)',
+                          marginRight: '4px',
+                        }}
                       />
                     }
                   />
@@ -113,7 +119,10 @@ export const Login = () => {
                     maxLength={50}
                     prefix={
                       <Icons.KeyOutlined
-                        style={{ color: "rgba(0,0,0,.25)", marginRight: "4px" }}
+                        style={{
+                          color: 'rgba(0,0,0,.25)',
+                          marginRight: '4px',
+                        }}
                       />
                     }
                   />
@@ -130,9 +139,9 @@ export const Login = () => {
                   Sign in
                 </Button>
 
-                <Typography style={{ marginTop: "1rem" }}>
-                  Don’t have an account?{" "}
-                  <Link style={{ fontWeight: "600" }} to="/register">
+                <Typography style={{ marginTop: '1rem' }}>
+                  Don’t have an account?{' '}
+                  <Link style={{ fontWeight: '600' }} to="/register">
                     Sign up
                   </Link>
                 </Typography>
