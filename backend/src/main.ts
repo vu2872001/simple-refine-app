@@ -6,7 +6,7 @@ import * as cookieParser from 'cookie-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const port = process.env.PORT;
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
