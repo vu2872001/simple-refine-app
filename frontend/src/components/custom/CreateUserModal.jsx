@@ -174,7 +174,7 @@ function CreateUserModal() {
             disabled={disable}
             loading={disable}
           >
-            Sign up
+            Create
           </Button>
         </Form>
       </Modal>
