@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import routerProvider from '@pankod/refine-react-router';
 import { authProvider } from './AuthProvider';
@@ -87,3 +88,4 @@ export const GetData = () => {
 };
 
 export default GetData;
+

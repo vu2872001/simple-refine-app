@@ -1,3 +1,4 @@
+
 import { Button, Modal } from 'antd';
 import { Form, Input, Icons, EditButton } from '@pankod/refine';
 import { toast } from 'react-toastify';
@@ -171,3 +172,4 @@ function UpdateUserModal({ data }) {
   );
 }
 export default UpdateUserModal;
+

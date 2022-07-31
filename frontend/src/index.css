@@ -1,3 +1,4 @@
+
 .Toastify__toast-container--top-center,
 .Toastify__toast-container--top-right {
   width: 25vw !important;
@@ -105,3 +106,4 @@
 .ReactQueryDevtools {
   display: none !important;
 }
+

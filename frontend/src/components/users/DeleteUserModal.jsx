@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal } from 'antd';
@@ -54,3 +55,4 @@ function DeleteUserModal({ data }) {
 }
 
 export default DeleteUserModal;
+
