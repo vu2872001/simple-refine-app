@@ -73,7 +73,7 @@ export const Register = () => {
                     );
                   } else {
                     toast.error(
-                      'Your email already exist, please register another email',
+                      'Your email already exist, please sign up another email',
                       {
                         position: 'top-center',
                         theme: 'light',
