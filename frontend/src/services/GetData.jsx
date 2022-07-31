@@ -1,10 +1,11 @@
+
 import axios from 'axios';
 import routerProvider from '@pankod/refine-react-router';
 import { authProvider } from './AuthProvider';
 import { dataProvider } from './DataProvider';
 import { notificationProvider } from './NotificationProvider';
 
-import PrimasLogo from "assets/images/PrimasLogo.png"
+import PrimasLogo from 'assets/images/PrimasLogo.png';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { Error404, Error403 } from 'components/error';
 import { ToastContainer } from 'react-toastify';
@@ -55,7 +56,7 @@ export const GetData = () => {
         //   edit: EditPost,
         // },
       ]}
-      catchAll={<Error404/>}
+      catchAll={<Error404 />}
       DashboardPage={HomePage}
       LoginPage={Login}
       Layout={({ children }) => (
@@ -73,11 +74,18 @@ export const GetData = () => {
       )}
       Title={({ collapsed }) => (
         <div>
-            {!collapsed && <img style={{width: "200px", padding: "20px 10px 20px 0"}} src={PrimasLogo} alt="Logo" />}
+          {!collapsed && (
+            <img
+              style={{ width: '200px', padding: '20px 10px 20px 0' }}
+              src={PrimasLogo}
+              alt="Logo"
+            />
+          )}
         </div>
-    )}
+      )}
     />
   );
 };
 
 export default GetData;
+

@@ -1,22 +1,15 @@
+
 import { Button, Modal } from 'antd';
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.min.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { registerUser } from 'pages/registerpage/RegisterService';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  useLogin,
-  Row,
-  Col,
-  AntdLayout,
-  Card,
-  Typography,
   Form,
   Input,
   Icons,
-  useNavigation,
-  useRouterContext,
 } from '@pankod/refine';
 
 function CreateUserModal() {
@@ -24,8 +17,6 @@ function CreateUserModal() {
   const dispatch = useDispatch();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // const {isFetching} = useSelector((state) => state.auth.register)
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -37,7 +28,7 @@ function CreateUserModal() {
 
   return (
     <>
-      <Button type="primary " onClick={showModal}>
+      <Button type="primary" onClick={showModal} style={{height: 40, marginBottom: 12}}>
         Create New User
       </Button>
       <Modal
@@ -182,3 +173,4 @@ function CreateUserModal() {
   );
 }
 export default CreateUserModal;
+

@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 .Toastify__toast-container--top-center,
 .Toastify__toast-container--top-right {
@@ -105,3 +102,8 @@
 .ant-layout-sider-trigger:hover {
   background-color: #67be23 !important;
 }
+
+.ReactQueryDevtools {
+  display: none !important;
+}
+
