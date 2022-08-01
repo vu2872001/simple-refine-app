@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Modal } from 'antd';
 import { Icons } from '@pankod/refine';
 import { deleteUser } from 'components/users/UserService';
-
+import {store} from 'redux/store'
 function DeleteUserModal({ data }) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -14,7 +14,8 @@ function DeleteUserModal({ data }) {
   };
 
   const handleOk = async () => {
-    await deleteUser(data.id, dispatch);
+    const token = store.getState().auth.login.currentUser.access;
+    await deleteUser(data.id,token, dispatch);
     setConfirmLoading(true);
     setTimeout(() => {
       setVisible(false);

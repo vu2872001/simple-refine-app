@@ -74,6 +74,7 @@ const usersSlice = createSlice({
             state.deleteUser.isError = false;
         },
         deleteUserFailed:(state) =>{
+            debugger
             state.deleteUser.isFetching = false;
             state.deleteUser.isError = true;
         },
