@@ -1,10 +1,10 @@
-
-import { Button, Modal } from 'antd';
-import { Form, Input, Icons, EditButton } from '@pankod/refine';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateUser } from 'components/users/UserService';
+import { Button, Modal } from "antd";
+import { Form, Input, Icons, EditButton } from "@pankod/refine";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "components/users/UserService";
+import { store } from "redux/store";
 
 function UpdateUserModal({ data }) {
   const [disable, setDisable] = useState(false);
@@ -27,7 +27,7 @@ function UpdateUserModal({ data }) {
         title="Update User Info"
         visible={isModalVisible}
         onCancel={handleCancel}
-        style={{ top: '200px' }}
+        style={{ top: "200px" }}
         maskClosable={false}
         footer={null}
       >
@@ -36,21 +36,22 @@ function UpdateUserModal({ data }) {
           onFinish={async (value) => {
             toast.dismiss();
             setDisable(true);
-            const res = await updateUser(data.id, value, dispatch);
+            const token = store.getState().auth.login.currentUser.access;
+            const res = await updateUser(data.id, value, token, dispatch);
             if (res) {
-              toast.success('Update successfully', {
-                position: 'top-center',
-                theme: 'light',
+              toast.success("Update successfully", {
+                position: "top-center",
+                theme: "light",
                 autoClose: 1000,
                 hideProgressBar: true,
               });
               setTimeout(() => window.location.reload(), 500);
             } else {
               toast.error(
-                'Your email already exist, please register another email',
+                "Your email already exist, please register another email",
                 {
-                  position: 'top-center',
-                  theme: 'light',
+                  position: "top-center",
+                  theme: "light",
                   autoClose: 3000,
                   hideProgressBar: true,
                 }
@@ -69,8 +70,8 @@ function UpdateUserModal({ data }) {
             rules={[
               {
                 required: true,
-                type: 'email',
-                message: 'The input is not valid E-mail!',
+                type: "email",
+                message: "The input is not valid E-mail!",
               },
             ]}
             initialValue={data.email}
@@ -84,8 +85,8 @@ function UpdateUserModal({ data }) {
               prefix={
                 <Icons.MailOutlined
                   style={{
-                    color: 'rgba(0,0,0,.25)',
-                    marginRight: '4px',
+                    color: "rgba(0,0,0,.25)",
+                    marginRight: "4px",
                   }}
                 />
               }
@@ -106,8 +107,8 @@ function UpdateUserModal({ data }) {
               prefix={
                 <Icons.UserOutlined
                   style={{
-                    color: 'rgba(0,0,0,.25)',
-                    marginRight: '4px',
+                    color: "rgba(0,0,0,.25)",
+                    marginRight: "4px",
                   }}
                 />
               }
@@ -127,8 +128,8 @@ function UpdateUserModal({ data }) {
               prefix={
                 <Icons.UserOutlined
                   style={{
-                    color: 'rgba(0,0,0,.25)',
-                    marginRight: '4px',
+                    color: "rgba(0,0,0,.25)",
+                    marginRight: "4px",
                   }}
                 />
               }
@@ -149,8 +150,8 @@ function UpdateUserModal({ data }) {
               prefix={
                 <Icons.CalendarOutlined
                   style={{
-                    color: 'rgba(0,0,0,.25)',
-                    marginRight: '4px',
+                    color: "rgba(0,0,0,.25)",
+                    marginRight: "4px",
                   }}
                 />
               }
@@ -172,4 +173,3 @@ function UpdateUserModal({ data }) {
   );
 }
 export default UpdateUserModal;
-
