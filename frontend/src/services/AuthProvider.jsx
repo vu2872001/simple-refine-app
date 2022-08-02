@@ -43,8 +43,8 @@ export const authProvider = {
   checkAuth: () => {
     const state = store.getState();
     const currentUser = state.auth.login.currentUser;
-    const token = currentUser.access;
-    const role = jwt_decode(token).user.role;
+    const token = jwt_decode(currentUser.access).user;
+    const role = token.role;
     if (role) {
       return Promise.resolve();
     }
@@ -53,8 +53,8 @@ export const authProvider = {
   getPermissions: () => {
     const state = store.getState();
     const currentUser = state.auth.login.currentUser;
-    const token = currentUser.access;
-    const permissions = jwt_decode(token).user.permissions;
+    const token = jwt_decode(currentUser.access).user;
+    const permissions = token.permissions;
     if (permissions) {
       return Promise.resolve(permissions);
     }
@@ -63,8 +63,8 @@ export const authProvider = {
   getUserIdentity: () => {
     const state = store.getState();
     const currentUser = state.auth.login.currentUser;
-    const token = currentUser.access;
-    const role = jwt_decode(token).user.role;
+    const token = jwt_decode(currentUser.access).user;
+    const role = token.role;
     if (role) {
       return Promise.resolve(role);
     }

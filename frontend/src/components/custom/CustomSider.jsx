@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -28,7 +27,8 @@ export const CustomSider = () => {
       const { label, route, name } = item;
       const isSelected = route === selectedKey;
       var auth = true;
-      if (identity !== 'Admin' && label !== 'Dashboard') auth = false;
+      if (identity !== 'Admin' && label === 'User/alls') auth = false;
+      
       return (
         <CanAccess key={route} resource={name.toLowerCase()}>
           {auth && (
@@ -49,6 +49,14 @@ export const CustomSider = () => {
                       marginBottom: 4,
                     }}
                   />
+                ) : label === 'User/mes' ? (
+                  <Icons.UserOutlined 
+                    style={{
+                      color: 'black',
+                      fontSize: 18,
+                      marginBottom: 2,
+                    }}
+                  />
                 ) : (
                   <Icons.UnorderedListOutlined
                     style={{
@@ -64,7 +72,9 @@ export const CustomSider = () => {
                 style={{ color: 'black', fontSize: 18 }}
                 to={route}
               >
-                {label.split('/')[0]}
+                {label.split('/')[1] === 'mes'
+                  ? 'My Information'
+                  : label.split('/')[0]}
               </Link>
               {/* {!collapsed && (
                 <Icons.RightOutlined
@@ -89,6 +99,7 @@ export const CustomSider = () => {
   };
 
   return (
+    
     <AntdLayout.Sider
       collapsible
       collapsed={collapsed}
@@ -123,4 +134,3 @@ export const CustomSider = () => {
     </AntdLayout.Sider>
   );
 };
-
