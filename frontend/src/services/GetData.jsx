@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import routerProvider from '@pankod/refine-react-router';
 import { authProvider } from './AuthProvider';
@@ -14,12 +13,10 @@ import { CustomSider } from 'components/custom';
 import HomePage from 'pages/homepage/HomePage';
 import { Login } from 'pages/loginpage/Login';
 import { Register } from 'pages/registerpage/Register';
-import { UsersList, CreateUser, EditUser } from 'components/users';
-import { CreatePost, EditPost, Posts } from 'components/posts';
+import { UserInfo, UsersList, } from 'pages/users';
 
 export const GetData = () => {
   const API_URL = 'http://localhost:3000';
-
   return (
     <Refine
       authProvider={authProvider}
@@ -46,15 +43,11 @@ export const GetData = () => {
         {
           name: 'user/all',
           list: UsersList,
-          // create: CreateUser,
-          // edit: EditUser,
         },
-        // {
-        //   name: "posts",
-        //   list: Posts,
-        //   create: CreatePost,
-        //   edit: EditPost,
-        // },
+        {
+          name: 'user/me',
+          list: UserInfo,
+        },
       ]}
       catchAll={<Error404 />}
       DashboardPage={HomePage}
@@ -76,7 +69,7 @@ export const GetData = () => {
         <div>
           {!collapsed && (
             <img
-              style={{ width: '200px', padding: '20px 10px 20px 0' }}
+              style={{ width: '200px', padding: '20px 0 20px 10px' }}
               src={PrimasLogo}
               alt="Logo"
             />

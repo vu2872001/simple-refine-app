@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal } from 'antd';
 import { Icons } from '@pankod/refine';
-import { deleteUser } from 'components/users/UserService';
-import {store} from 'redux/store'
+import { deleteUser } from 'pages/users/UserService';
+
 function DeleteUserModal({ data }) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -14,8 +14,7 @@ function DeleteUserModal({ data }) {
   };
 
   const handleOk = async () => {
-    const token = store.getState().auth.login.currentUser.access;
-    await deleteUser(data.id,token, dispatch);
+    await deleteUser(data.id, dispatch);
     setConfirmLoading(true);
     setTimeout(() => {
       setVisible(false);

@@ -1,23 +1,25 @@
-
-import {store} from "../redux/store";
-import { stringify } from "query-string";
+import { store } from '../redux/store';
+import { stringify } from 'query-string';
 import {
   getAllUsersFailed,
   getAllUsersStart,
   getAllUsersSuccess,
-} from "redux/usersSlice";
+  getUserInfoFailed,
+  getUserInfoStart,
+  getUserInfoSuccess,
+} from 'redux/usersSlice';
 
 const mapOperator = (operator) => {
   switch (operator) {
-    case "ne":
-    case "gte":
-    case "lte":
+    case 'ne':
+    case 'gte':
+    case 'lte':
       return `_${operator}`;
-    case "contains":
-      return "_like";
-    case "eq":
+    case 'contains':
+      return '_like';
+    case 'eq':
     default:
-      return "";
+      return '';
   }
 };
 
@@ -44,10 +46,10 @@ const generateFilter = (filters) => {
   const queryFilters = {};
   if (filters) {
     filters.map((filter) => {
-      if (filter.operator !== "or") {
+      if (filter.operator !== 'or') {
         const { field, operator, value } = filter;
 
-        if (field === "q") {
+        if (field === 'q') {
           queryFilters[field] = value;
           return;
         }
@@ -82,16 +84,16 @@ export const dataProvider = (apiUrl, httpClient) => ({
     // const { data, headers } = await httpClient.get(
     //     `${url}?${stringify(query)}`,
     // );
-    
+
     store.dispatch(getAllUsersStart());
     try {
       const token = store.getState().auth.login.currentUser.access;
-      const config ={
-        headers:{
-          Authorization: `Bearer ${token}`
-        }
-      }
-      var { data } = await httpClient.get(`${url}`,config);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      var { data } = await httpClient.get(`${url}`, config);
       store.dispatch(getAllUsersSuccess(data));
     } catch (error) {
       store.dispatch(getAllUsersFailed());
@@ -106,7 +108,7 @@ export const dataProvider = (apiUrl, httpClient) => ({
     const { data } = await httpClient.get(
       `${apiUrl}/${resource}?${stringify({ id: ids })}`
     );
-      
+
     return {
       data,
     };
@@ -125,7 +127,10 @@ export const dataProvider = (apiUrl, httpClient) => ({
   createMany: async ({ resource, variables }) => {
     const response = await Promise.all(
       variables.map(async (param) => {
-        const { data } = await httpClient.post(`${apiUrl}/${resource}`, param);
+        const { data } = await httpClient.post(
+          `${apiUrl}/${resource}`,
+          param
+        );
         return data;
       })
     );
@@ -157,10 +162,22 @@ export const dataProvider = (apiUrl, httpClient) => ({
     return { data: response };
   },
 
-  getOne: async ({ resource, id }) => {
-    const url = `${apiUrl}/${resource}/${id}`;
-
-    const { data } = await httpClient.get(url);
+  getOne: async ({ resource }) => {
+    const url = `${apiUrl}/${resource}`;
+    
+    store.dispatch(getUserInfoStart());
+    try {
+      const token = store.getState().auth.login.currentUser.access;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      var { data } = await httpClient.get(`${url}`, config);
+      store.dispatch(getUserInfoSuccess(data));
+    } catch (error) {
+      store.dispatch(getUserInfoFailed());
+    }
 
     return {
       data,
@@ -194,49 +211,71 @@ export const dataProvider = (apiUrl, httpClient) => ({
     return apiUrl;
   },
 
-  custom: async ({ url, method, filters, sort, payload, query, headers }) => {
-    let httpClientUrl = `${url}?`;
+  custom: async ({
+    url,
+    method,
+    filters,
+    sort,
+    payload,
+    query,
+    headers,
+  }) => {
+    let httpClientUrl = `${apiUrl}/${url}`;
 
-    if (sort) {
-      const generatedSort = generateSort(sort);
-      if (generatedSort) {
-        const { _sort, _order } = generatedSort;
-        const sortQuery = {
-          _sort: _sort.join(","),
-          _order: _order.join(","),
-        };
-        httpClientUrl = `${httpClientUrl}&${stringify(sortQuery)}`;
-      }
-    }
+    // if (sort) {
+    //   const generatedSort = generateSort(sort);
+    //   if (generatedSort) {
+    //     const { _sort, _order } = generatedSort;
+    //     const sortQuery = {
+    //       _sort: _sort.join(","),
+    //       _order: _order.join(","),
+    //     };
+    //     httpClientUrl = `${httpClientUrl}&${stringify(sortQuery)}`;
+    //   }
+    // }
 
-    if (filters) {
-      const filterQuery = generateFilter(filters);
-      httpClientUrl = `${httpClientUrl}&${stringify(filterQuery)}`;
-    }
+    // if (filters) {
+    //   const filterQuery = generateFilter(filters);
+    //   httpClientUrl = `${httpClientUrl}&${stringify(filterQuery)}`;
+    // }
 
-    if (query) {
-      httpClientUrl = `${httpClientUrl}&${stringify(query)}`;
-    }
+    // if (query) {
+    //   httpClientUrl = `${httpClientUrl}&${stringify(query)}`;
+    // }
 
-    if (headers) {
-      httpClient.defaults.headers = {
-        ...httpClient.defaults.headers,
-        ...headers,
-      };
-    }
+    // if (headers) {
+    //   httpClient.defaults.headers = {
+    //     ...httpClient.defaults.headers,
+    //     ...headers,
+    //   };
+    // }
+
+    const token = store.getState().auth.login.currentUser.access;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
     let axiosResponse;
     switch (method) {
-      case "put":
-      case "post":
-      case "patch":
-        axiosResponse = await httpClient[method](url, payload);
+      case 'put':
+      case 'post':
+      case 'patch':
+        axiosResponse = await httpClient[method](
+          httpClientUrl,
+          payload,
+          config
+        );
         break;
-      case "delete":
-        axiosResponse = await httpClient.delete(url);
+      case 'delete':
+        axiosResponse = await httpClient.delete(
+          httpClientUrl,
+          config
+        );
         break;
       default:
-        axiosResponse = await httpClient.get(httpClientUrl);
+        axiosResponse = await httpClient.get(httpClientUrl, config);
         break;
     }
 

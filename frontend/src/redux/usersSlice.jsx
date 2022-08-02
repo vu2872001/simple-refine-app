@@ -22,6 +22,11 @@ const usersSlice = createSlice({
             isFetching:false,
             isError:false,
             isSuccess:false
+        },
+        getInfo:{
+            isFetching:false,
+            isError:false,
+            userInfo:''
         }
     },
     reducers:{
@@ -45,6 +50,7 @@ const usersSlice = createSlice({
             state.restoreAll.isFetching = false;
             state.restoreAll.isSuccess = true;
             state.getAll.usersData = null;
+            state.getInfo.userInfo = null;
             state.restoreAll.isError = false;
         },
         restoreAllUsersFailed:(state) =>{
@@ -74,9 +80,21 @@ const usersSlice = createSlice({
             state.deleteUser.isError = false;
         },
         deleteUserFailed:(state) =>{
-            debugger
             state.deleteUser.isFetching = false;
             state.deleteUser.isError = true;
+        },
+        
+        getUserInfoStart:(state) =>{
+            state.getInfo.isFetching = true;
+        },
+        getUserInfoSuccess: (state, action) =>{
+            state.getInfo.isFetching= false;
+            state.getInfo.userInfo = action.payload;
+            state.getInfo.isError= false;
+        },
+        getUserInfoFailed: (state) =>{
+            state.getInfo.isError = true;
+            state.getInfo.isFetching = false;
         },
     }
 })
@@ -85,7 +103,8 @@ export const {
     getAllUsersStart,getAllUsersFailed,getAllUsersSuccess,
     restoreAllUsersStart,restoreAllUsersSuccess,restoreAllUsersFailed,
     updateUserStart,updateUserFailed,updateUserSuccess,
-    deleteUserFailed,deleteUserStart,deleteUserSuccess
+    deleteUserFailed,deleteUserStart,deleteUserSuccess,
+    getUserInfoStart,getUserInfoSuccess, getUserInfoFailed,
 } = usersSlice.actions
 
 export default usersSlice.reducer
