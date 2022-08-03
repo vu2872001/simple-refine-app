@@ -10,8 +10,8 @@ export class PageOptionsDTO {
     // order?: object
     // where?: object
   ) {
-    this.page = page | 1;
-    this.take = take | 20;
+    this.page = page || 1;
+    this.take = take || 20;
     // this.where = where;
     // this.order = order;
   }
