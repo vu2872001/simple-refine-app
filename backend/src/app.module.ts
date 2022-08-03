@@ -1,10 +1,11 @@
 import * as Joi from '@hapi/joi';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
+import { AppService } from './app.service';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
-// import { ProductModule } from './modules/product/product.module';
 import { LogsMiddleware } from './common/middlewares/logs.middleware';
 import { DatabaseModule } from './config/database/database.config.module';
+import { RolePermissionModule } from './modules/role_permission/rolePermission.module';
 
 @Module({
   imports: [
@@ -23,11 +24,11 @@ import { DatabaseModule } from './config/database/database.config.module';
       }),
     }),
     DatabaseModule,
-    //ProductModule,
     AuthModule,
+    RolePermissionModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [AppService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

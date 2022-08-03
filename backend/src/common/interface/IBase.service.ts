@@ -3,8 +3,8 @@ import { PageOptionsDTO } from '../dtos/pageOption.dto';
 
 export interface IBaseService<T, CreateData, UpdateData> {
   getAllData(pageOptionsDto: PageOptionsDTO);
-  delete(id: number): Promise<boolean>;
-  getDataById(id: number): Promise<T>;
-  create(createData: CreateData): Promise<T>;
-  update(id: number, updateData: UpdateData): Promise<T>;
+  delete(id: number);
+  getDataById(id: number);
+  create(createData: CreateData);
+  update(id: number, updateData: UpdateData);
 }

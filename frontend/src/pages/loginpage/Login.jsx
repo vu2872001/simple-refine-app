@@ -1,4 +1,3 @@
-
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import {
@@ -62,15 +61,12 @@ export const Login = () => {
                   if (res) {
                     login(res);
                   } else {
-                    toast.error(
-                      "Email or Password aren't correct",
-                      {
-                        position: 'top-center',
-                        theme: 'light',
-                        autoClose: 3000,
-                        hideProgressBar: true,
-                      }
-                    );
+                    toast.error("Email or Password aren't correct", {
+                      position: 'top-center',
+                      theme: 'light',
+                      autoClose: 3000,
+                      hideProgressBar: true,
+                    });
                     setTimeout(() => setDisable(false), 1000);
                   }
                 }}
@@ -154,4 +150,3 @@ export const Login = () => {
     </AntdLayout>
   );
 };
-

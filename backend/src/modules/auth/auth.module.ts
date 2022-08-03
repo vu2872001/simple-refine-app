@@ -1,6 +1,6 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
 import { AuthController } from './controllers/auth.controller';
@@ -9,6 +9,7 @@ import { UserModule } from '../user/user.module';
 import { LocalStrategy } from './guards/local.strategy';
 import { JwtStrategy } from './guards/jwt.strategy';
 import { JwtRefreshTokenStrategy } from './guards/jwt-refresh-token.strategy';
+import { RolePermissionModule } from '../role_permission/rolePermission.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { JwtRefreshTokenStrategy } from './guards/jwt-refresh-token.strategy';
         },
       }),
     }),
+    forwardRef(() => RolePermissionModule),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy],
   controllers: [AuthController],

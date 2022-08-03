@@ -25,19 +25,16 @@ export class AuthService {
       const userExist = await this.userService.getUserByEmail(
         registrationData.email,
       );
-
       if (userExist) {
         throw new UnauthorizedException(
           `Email: ${registrationData.email} exists. Try with another email`,
         );
       }
-
       const hashedPassword = await bcrypt.hash(registrationData.password, 10);
       const user = await this.userService.create({
         ...registrationData,
         password: hashedPassword,
       });
-
       return user;
     } catch (error) {
       throw new UnauthorizedException(error.message);
@@ -52,9 +49,9 @@ export class AuthService {
           `This account has been disabled by administrator. Please contact for more information.`,
         );
       }
-
       await this.verifyPassword(loginData.password, userExist.password);
-      return await this.userService.getDataByIdWithPermission(userExist.id);
+
+      return userExist;
     } catch (error) {
       throw new UnauthorizedException(error.response);
     }
@@ -65,7 +62,7 @@ export class AuthService {
   }
 
   public async getCookieWithJwtAccessToken(userId: number) {
-    const user = await this.userService.getDataByIdWithPermission(userId);
+    const user = await this.userService.getDataById(userId);
     const payload: TokenPayload = { user };
     const token = this.jwtService.sign(payload);
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
@@ -86,8 +83,8 @@ export class AuthService {
       'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
     )}`;
     return {
-      cookie,
-      token,
+      cookie: cookie,
+      token: token,
     };
   }
 
