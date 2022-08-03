@@ -28,6 +28,8 @@ export const UsersList = () => {
     ],
   });
 
+  const dataSource = tableProps.dataSource?.data;
+
   return (
     <div>
       <Typography
@@ -43,7 +45,7 @@ export const UsersList = () => {
       </Typography>
       <List title="Users List">
         <CreateUserModal />
-        <Table {...tableProps} rowKey="id">
+        <Table {...tableProps} dataSource={dataSource} rowKey="id">
           <Table.Column dataIndex="email" title="Email" />
           <Table.Column dataIndex="username" title="Username" />
           <Table.Column dataIndex="name" title="Name" />
