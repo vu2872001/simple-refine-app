@@ -1,8 +1,7 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Request } from 'express';
 import { UserService } from '../../user/services/user.service';
 import { TokenPayload } from '../interfaces/tokenPayload.interface';
 
@@ -24,8 +23,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: TokenPayload) {
-    const user = await this.userService.getDataByIdWithPermission(payload.user.id);
-    const newUser = await this.userService.getUserByEmail(user.email);
-    return newUser;
+    try {
+      if (!payload.user.id) {
+        throw new UnauthorizedException(`You mush log in to system`);
+      }
+      const user = await this.userService.getDataById(Number(payload.user.id));
+      const newUser = await this.userService.getUserByEmail(user.email);
+      return newUser;
+    } catch (error) {
+      throw new UnauthorizedException(`You mush log in to system`);
+    }
   }
 }

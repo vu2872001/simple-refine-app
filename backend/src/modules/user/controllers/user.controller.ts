@@ -1,3 +1,4 @@
+import { PermissionGuard } from './../../auth/guards/permission.guard';
 import {
   Req,
   Put,
@@ -14,26 +15,44 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 
-import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { UserPageDTO } from '../dtos/userPage.dto';
+import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { UpdateUserDTO } from '../dtos/updateUser.dto';
 import { UserService } from '../services/user.service';
-// import { RoleGuard } from '../../auth/guards/role.guard';
 import { FindOneParams } from '../../../utils/findOneParams';
-// import { Role } from '../../../common/constants/role.constant';
 import { UpdatePasswordDTO } from '../dtos/updatePassword.dto';
-import { PermissionGuard } from '../../auth/guards/permission.guard';
-import { JwtAuthenticationGuard } from '../../auth/guards/jwt-authentication.guard';
+// import { RoleGuard } from '../../auth/guards/role.guard';
+// import { Role } from '../../../common/constants/role.constant';
+// import { JwtAuthenticationGuard } from '../../auth/guards/jwt-authentication.guard';
 import { RequestWithUser } from '../../../common/interface/requestWithUser.interface';
-import UserPermission from '../permission/user.permission';
+import Permission from '../../../common/constants/permission.constant';
 
-@Controller('user')
+@Controller('/user')
 @ApiTags('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(PermissionGuard(Permission.ViewAllUser))
+  @Get('/all')
+  async getAllUser(@Body() pageOption: UserPageDTO) {
+    return await this.userService.getAllData(pageOption);
+  }
+
+  // @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(PermissionGuard(Permission.ViewMyDetails))
+  @Get('/me')
+  async authenticate(@Req() request: RequestWithUser) {
+    return await this.userService.getDataById(Number(request.user.id));
+  }
+
+  @UseGuards(PermissionGuard(Permission.ViewAllPermissions))
+  @Get('/:id')
+  async ViewUser(@Param() { id }: FindOneParams) {
+    return this.userService.getDataById(Number(id));
+  }
+
+  @UseGuards(PermissionGuard(Permission.EditUser))
   @Put('/update/:id')
   @ApiParam({
     name: 'id',
@@ -48,14 +67,25 @@ export class UserController {
     return this.userService.update(Number(id), user);
   }
 
-  @UseGuards(JwtAuthenticationGuard)
-  @Get('/me')
-  async authenticate(@Req() request: RequestWithUser) {
-    return await this.userService.getDataById(request.user.id);
+  // @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(PermissionGuard(Permission.UpdateInfomation))
+  @Put('/me/update/')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a post that exists in the database',
+    type: Number,
+  })
+  async updateMyInfo(
+    @Req() request: RequestWithUser,
+    @Body() user: UpdateUserDTO,
+  ) {
+    return this.userService.update(Number(request.user.id), user);
   }
 
   @HttpCode(200)
-  @UseGuards(JwtAuthenticationGuard)
+  // @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(PermissionGuard(Permission.EditPassword))
   @Post('/update/password')
   async updatePassword(
     @Req() request: RequestWithUser,
@@ -65,15 +95,8 @@ export class UserController {
     return await this.userService.updatePassword(userId, updatePassword);
   }
 
-  //@UseGuards(RoleGuard(Role.Admin))
-  @UseGuards(PermissionGuard(UserPermission.ViewAllUser))
-  @Get('/all')
-  async getAllUser(@Body() pageOption: UserPageDTO) {
-    return await this.userService.getAllData(pageOption);
-  }
-
   // @UseGuards(RoleGuard(Role.Admin))
-  @UseGuards(PermissionGuard(UserPermission.DeleteUser))
+  @UseGuards(PermissionGuard(Permission.DeleteUser))
   @Delete('/delete/:id')
   @ApiParam({
     name: 'id',
@@ -93,7 +116,7 @@ export class UserController {
   }
 
   // @UseGuards(RoleGuard(Role.Admin))
-  @UseGuards(PermissionGuard(UserPermission.DeleteUser))
+  @UseGuards(PermissionGuard(Permission.RestoreUser))
   @Put('/restore/:id')
   @ApiParam({
     name: 'id',

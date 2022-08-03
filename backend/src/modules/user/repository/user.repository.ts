@@ -1,150 +1,181 @@
+import { Role as RoleModel } from './../../role_permission/entities/role.model';
 import {
   Injectable,
   NotFoundException,
   InternalServerErrorException,
+  Inject,
 } from '@nestjs/common';
-import { User } from '../entities/user.entity';
-import { ConfigService } from '@nestjs/config';
-import { DataSource, Repository } from 'typeorm';
+import { User } from '../entities/user.model';
+import { UserReturn } from '../dtos/userReturn.dto';
 import { PageDTO } from '../../../common/dtos/page.dto';
 import { CreateUserDTO } from '../dtos/createUser.dto';
 import { UpdateUserDTO } from '../dtos/updateUser.dto';
-import Permission from '../../auth/types/permission.type';
 import { SerializeUser } from '../serialize/user.serialize';
-import { SerializeUser as SerializeAuth } from '../../auth/serialize/user.serialize';
 import { Role } from '../../../common/constants/role.constant';
 import { PageMetaDTO } from '../../../common/dtos/pageMeta.dto';
 import { UserPageOptionsDTO } from '../dtos/userPageOptions.dto';
 import { PageOptionsDTO } from '../../../common/dtos/pageOption.dto';
+import { RoleRepository } from './../../role_permission/repository/role.repository';
 
 @Injectable()
-export class UserRepository extends Repository<User> {
+export class UserRepository {
   constructor(
-    private dataSource: DataSource,
-    private readonly configService: ConfigService,
-  ) {
-    super(User, dataSource.createEntityManager());
-  }
+    // @InjectModel(User)
+    @Inject('UserRepository')
+    private userRepository: typeof User,
+    private roleRepository: RoleRepository,
+  ) {}
 
   async getAllUser() {
-    try {
-      return await this.find();
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+    return await this.userRepository.findAll();
   }
 
-  async getUserById(id: number): Promise<User> {
-    try {
-      const user = await this.findOne({ where: { id: id } });
-      return SerializeUser(user);
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
+  async getUserById(id: number) {
+    //const user = await this.findOne({ where: { id: id } });
+    const user = await this.userRepository.findByPk(id);
+    if (!user) {
+      throw new NotFoundException(`Not found user with id: ${id}`);
     }
+    const role = await this.roleRepository.getRoleById(user.roleId);
+    user['role'] = role;
+    return new UserReturn(user);
   }
 
-  async getDataByIdWithPermission(id: number): Promise<User> {
-    try {
-      const user = await this.findOne({ where: { id: id } });
-      console.log(user)
-      return SerializeAuth(user);
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+  async getUserByIdAndPassword(id: number) {
+    return await this.userRepository.findOne({ where: { id: id } });
   }
 
-  async getUserByIdAndPassword(id: number): Promise<User> {
-    try {
-      return await this.findOne({ where: { id: id } });
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+  async getUserByEmail(email: string) {
+    const user = await this.userRepository.findOne({
+      where: { email: email },
+      include: RoleModel,
+      raw: true,
+      nest: true,
+    });
+    return user;
   }
 
-  async getUserByEmail(email: string): Promise<User> {
-    try {
-      const user = await this.findOne({ where: { email: email } });
-      return user;
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+  async getUserByRole(roleId: number) {
+    return await this.userRepository.count({
+      where: { roleId: roleId },
+    });
   }
 
-  async createUser(createUserDTO: CreateUserDTO): Promise<User> {
+  async createUser(createUserDTO: CreateUserDTO) {
+    let data: UserReturn;
+    let role;
     try {
-      let user = {
+      const user = {
         ...createUserDTO,
         name: createUserDTO.email,
         username: createUserDTO.email,
-        permissions: [],
       };
 
-      if (user.email === this.configService.get('ADMIN_USER_EMAIL')) {
-        Object.keys(Permission).forEach((permission) => {
-          user.permissions.push(permission);
+      if (user.email === 'admin@gmail.com') {
+        role = await this.roleRepository.getRoleByRoleValue(Role.Admin);
+        user['roleId'] = role.id;
+      } else {
+        role = await this.roleRepository.getRoleByRoleValue(Role.User);
+        user['roleId'] = role.id;
+      }
+
+      await this.userRepository
+        .create(user)
+        .then((result) => {
+          result = result.toJSON();
+          result['role'] = role;
+          data = new UserReturn(result);
+        })
+        .catch((error) => {
+          throw new InternalServerErrorException(error.message);
         });
-        user['role'] = Role.Admin;
-      }
-
-      const newUser = await this.create(user);
-      return newUser;
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
+
+    return data;
   }
 
-  async updateUser(id: number, updateUserDTO: UpdateUserDTO): Promise<User> {
+  async updateUser(id: number, updateUserDTO: UpdateUserDTO) {
+    let data: UserReturn;
     try {
-      const user = await this.getUserById(id);
-      const updatedUser = { ...user, ...updateUserDTO };
-      return updatedUser;
+      await this.userRepository
+        .update({ ...updateUserDTO }, { where: { id: id } })
+        .then(async () => {
+          data = await this.getUserById(id);
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
+    return data;
   }
 
-  async updateUserPassword(id: number, hashedPassword: string): Promise<User> {
+  async updateUserPassword(id: number, hashedPassword: string) {
+    let data: UserReturn;
     try {
-      const user = await this.findOne({ where: { id: id } });
-      const newUser = { ...user, password: hashedPassword };
-
-      await this.save(newUser);
-      return newUser;
+      await this.userRepository
+        .update({ password: hashedPassword }, { where: { id: id } })
+        .then(async () => {
+          data = await this.getUserById(id);
+        })
+        .catch((error) => {
+          throw new InternalServerErrorException(error.message);
+        });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
+    return data;
   }
 
-  async deleteUser(id: number): Promise<boolean> {
+  async deleteUser(id: number) {
+    let data = false;
     try {
-      const user = await this.getUserById(id);
-      const deletedUser = { ...user, isActivate: false };
-      await this.save(deletedUser);
-
-      const deletedResponse = await this.softDelete(id);
-      if (!deletedResponse.affected) {
-        throw new NotFoundException(`User with id: ${id} does not exist`);
-      }
-
-      return true;
+      await this.userRepository
+        .update({ isActivate: false }, { where: { id: id } })
+        .then(async () => {
+          await this.userRepository
+            .destroy({ where: { id: id } })
+            .then(() => {
+              data = true;
+            })
+            .catch((error) => {
+              throw new InternalServerErrorException(error.message);
+            });
+        })
+        .catch((error) => {
+          throw new InternalServerErrorException(error.message);
+        });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
+    return data;
   }
 
-  async restoreUser(id: number): Promise<User> {
+  async restoreUser(id: number) {
+    let data: UserReturn;
     try {
-      const restoreResponse = await this.restore(id);
-      if (!restoreResponse.affected) {
-        throw new NotFoundException(`User with id: ${id} does not exist`);
-      }
-
-      const user = await this.getUserById(id);
-      const restoredUser = { ...user, isActivate: true };
-      return restoredUser;
+      await this.userRepository
+        .restore({ where: { id: id } })
+        .then(async () => {
+          await this.userRepository
+            .update({ isActivate: true }, { where: { id: id } })
+            .then(async () => {
+              data = await this.getUserById(id);
+            })
+            .catch((error) => {
+              throw new InternalServerErrorException(error.message);
+            });
+        })
+        .catch((error) => {
+          throw new InternalServerErrorException(error.message);
+        });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
+    return data;
   }
 
   async getUserWithPage(pageOptionsDto: PageOptionsDTO) {
@@ -153,32 +184,33 @@ export class UserRepository extends Repository<User> {
         pageOptionsDto.page,
         pageOptionsDto.take,
       );
-
-      // const userCount = await this.count({
-      //   // where: pageOptionsDto.where,
-      //   // order: pageOptionsDto.order,
-      // });
-
-      return await this.find({
+      const userCount = await this.userRepository.count({
         // where: pageOptionsDto.where,
         // order: pageOptionsDto.order,
-        skip: (userPageOptions.page - 1) * userPageOptions.take,
-        take: userPageOptions.take,
       });
 
-      // const serializeUser = users.map((user: User) => {
-      //   return SerializeUser(user);
-      // });
+      const users = await this.userRepository.findAll({
+        include: RoleModel,
+        // where: pageOptionsDto.where,
+        // order: pageOptionsDto.order,
+        offset: (userPageOptions.page - 1) * userPageOptions.take,
+        limit: userPageOptions.take,
+        raw: true,
+        nest: true,
+      });
 
-      // const dataReturn: PageDTO<User> = new PageDTO(
-      //   serializeUser,
-      //   new PageMetaDTO({
-      //     pageOptionsDTO: userPageOptions,
-      //     itemCount: userCount,
-      //   }),
-      // );
+      const serializeUser = users.map((user: User) => {
+        return new UserReturn(user);
+      });
 
-      // return dataReturn;
+      const dataReturn: PageDTO<UserReturn> = new PageDTO(
+        serializeUser,
+        new PageMetaDTO({
+          pageOptionsDTO: userPageOptions,
+          itemCount: userCount,
+        }),
+      );
+      return dataReturn;
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -186,9 +218,12 @@ export class UserRepository extends Repository<User> {
 
   async removeRefreshToken(id: number) {
     try {
-      await this.update(id, {
-        currentHashedRefreshToken: null,
-      });
+      await this.userRepository.update(
+        {
+          currentHashedRefreshToken: null,
+        },
+        { where: { id: id } },
+      );
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -196,12 +231,25 @@ export class UserRepository extends Repository<User> {
 
   async getUserByIdWithCookie(id: number) {
     try {
-      const user = await this.findOne({ where: { id: id } });
+      const user = await this.userRepository.findOne({ where: { id: id } });
       const serializeUser = SerializeUser(user);
       return {
         ...serializeUser,
         currentHashedRefreshToken: user.currentHashedRefreshToken,
       };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async updateToken(id: number, currentHashedRefreshToken: string) {
+    try {
+      await this.userRepository.update(
+        {
+          currentHashedRefreshToken,
+        },
+        { where: { id: id } },
+      );
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

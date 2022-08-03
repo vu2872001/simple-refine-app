@@ -1,4 +1,4 @@
-import { User } from '../../user/entities/user.entity';
+import { User } from '../../user/entities/user.model';
 
 export function SerializeUser(user: User) {
   const newUser = { ...user };
