@@ -73,7 +73,7 @@ export const CustomSider = () => {
                 to={route}
               >
                 {label.split('/')[1] === 'mes'
-                  ? 'My Information'
+                  ? 'My Info'
                   : label.split('/')[0]}
               </Link>
               {/* {!collapsed && (

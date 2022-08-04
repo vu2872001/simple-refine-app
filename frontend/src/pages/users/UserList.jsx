@@ -19,14 +19,7 @@ export const UsersList = () => {
   
   if (identity !== 'Admin') push('/403');
 
-  const { tableProps } = useTable({
-    initialSorter: [
-      {
-        field: 'id',
-        order: 'asc',
-      },
-    ],
-  });
+  const { tableProps } = useTable();
 
   const dataSource = tableProps.dataSource?.data;
 

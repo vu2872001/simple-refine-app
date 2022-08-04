@@ -90,6 +90,7 @@ export class AppService implements OnModuleInit {
       Role.Admin,
     );
     const roleUser = await this.rolePermissionService.getRoleByValue(Role.User);
+    const roleManager = await this.rolePermissionService.getRoleByValue(Role.Manager);
 
     await Promise.all(
       adminPermissionData.map(async (data) => {
@@ -115,6 +116,34 @@ export class AppService implements OnModuleInit {
         }
         console.log(
           `\t Set Permission "${permissionExist.permission}" to role "${Role.Admin}" completed`,
+        );
+      }),
+    );
+
+    await Promise.all(
+      userPermissionData.map(async (data) => {
+        const permissionExist =
+          await this.rolePermissionService.getPermissionByValue(data);
+        let rolePermissionExist =
+          await this.rolePermissionService.getRolePermissionByValue_Force(
+            roleManager.id,
+            permissionExist.id,
+          );
+        if (!rolePermissionExist) {
+          rolePermissionExist =
+            await this.rolePermissionService.createRolePermission({
+              roleId: roleManager.id,
+              permissionId: permissionExist.id,
+            });
+        } else if (rolePermissionExist.deletedAt !== null) {
+          rolePermissionExist =
+            await this.rolePermissionService.restoreRolePermission(
+              roleManager.id,
+              permissionExist.id,
+            );
+        }
+        console.log(
+          `\t Set Permission "${permissionExist.permission}" to role "${Role.Manager}" completed`,
         );
       }),
     );

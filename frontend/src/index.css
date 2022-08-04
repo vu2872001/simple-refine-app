@@ -96,13 +96,7 @@
   color: white !important;
   font-size: 18px;
 }
-.ant-layout-sider-has-trigger {
-  min-width: 220px !important;
-  max-width: 220px !important;
-  width: 220px !important;
-}
 .ant-layout-sider-trigger {
-  width: 220px !important;
   background-color: #8fdc25 !important;
 }
 .ant-layout-sider-trigger:hover {
