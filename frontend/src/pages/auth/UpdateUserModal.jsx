@@ -1,6 +1,5 @@
-
 import { Button, Modal } from 'antd';
-import { Form, Input, Icons, EditButton } from '@pankod/refine';
+import { Form, Input, Icons, EditButton, Select, useGetIdentity } from '@pankod/refine';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -9,7 +8,7 @@ import { updateUser } from 'pages/users/UserService';
 function UpdateUserModal({ data }) {
   const [disable, setDisable] = useState(false);
   const dispatch = useDispatch();
-
+  const { data: identity } = useGetIdentity();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -135,6 +134,26 @@ function UpdateUserModal({ data }) {
               }
             />
           </Form.Item>
+          {identity==='Admin' && <Form.Item
+            label="Role"
+            name="roleId"
+            rules={[{ required: true }]}
+            initialValue={data.role}
+          >
+            <Select
+              options={[
+                {
+                  label: 'User',
+                  value: 1,
+                },
+                {
+                  label: 'Manager',
+                  value: 2,
+                },
+              ]}
+              size="large"
+            />
+          </Form.Item>}
           <Form.Item
             name="age"
             label="Age"
@@ -173,4 +192,3 @@ function UpdateUserModal({ data }) {
   );
 }
 export default UpdateUserModal;
-

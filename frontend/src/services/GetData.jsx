@@ -14,6 +14,7 @@ import HomePage from 'pages/homepage/HomePage';
 import { Login } from 'pages/loginpage/Login';
 import { Register } from 'pages/registerpage/Register';
 import { UserInfo, UsersList, } from 'pages/users';
+import SetPermission from 'pages/auth/SetPermission';
 
 export const GetData = () => {
   const API_URL = 'http://localhost:3000';
@@ -44,6 +45,10 @@ export const GetData = () => {
           name: 'user/all',
           list: UsersList,
         },
+        // {
+        //   name: 'permission',
+        //   list: SetPermission,
+        // },
         {
           name: 'user/me',
           list: UserInfo,
@@ -69,7 +74,7 @@ export const GetData = () => {
         <div>
           {!collapsed && (
             <img
-              style={{ width: '200px', padding: '20px 0 20px 10px' }}
+              style={{ width: '200px', padding: '20px 10px' }}
               src={PrimasLogo}
               alt="Logo"
             />

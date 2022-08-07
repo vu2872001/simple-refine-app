@@ -1,3 +1,4 @@
+import { store } from 'redux/store';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser } from 'pages/users/UserService';
@@ -20,7 +21,9 @@ export const UserInfo = () => {
     resource: 'user/me',
     queryOptions: {  },
   });
-  const res = data?.data;
+  
+  const state = store.getState();
+  const userInfo = state.users.getInfo.userInfo;
 
   return (
     <div className="user-info">
@@ -43,16 +46,16 @@ export const UserInfo = () => {
         }}
       >
         <Col xs={6}>
-          {res && (
+          {userInfo && (
             <Form
               layout="vertical"
               requiredMark={false}
-              initialValues={res}
+              initialValues={userInfo}
               onFinish={async (value) => {
                 toast.dismiss();
                 setDisable(true);
                 const update = await updateUser(
-                  res.id,
+                  userInfo.id,
                   value,
                   dispatch
                 );
