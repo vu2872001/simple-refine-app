@@ -16,12 +16,11 @@ export const UsersList = () => {
   const { data: identity } = useGetIdentity();
   const { data: permissionsData } = usePermissions();
   const { push } = useNavigation();
-  
-  if (identity !== 'Admin') push('/403');
+
+  if (identity === 'User') push('/403');
 
   const { tableProps } = useTable();
-
-  const dataSource = tableProps.dataSource?.data;
+  const dataSource = tableProps.dataSource?.data;  
 
   return (
     <div>
@@ -49,10 +48,8 @@ export const UsersList = () => {
             dataIndex="actions"
             render={(_, record) => (
               <Space>
-                <UpdateUserModal data={record} />
-                {permissionsData?.includes('DeleteUser') && (
-                  <DeleteUserModal data={record} />
-                )}
+                <UpdateUserModal data={record}/>
+                {identity==='Admin' && <DeleteUserModal data={record} />}
               </Space>
             )}
           />
@@ -63,4 +60,3 @@ export const UsersList = () => {
 };
 
 export default UsersList;
-

@@ -1,2 +1,2 @@
-export * from './UserList';
+export * from '../auth/UserList';
 export * from './UserInfo';

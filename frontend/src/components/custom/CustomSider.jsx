@@ -27,8 +27,8 @@ export const CustomSider = () => {
       const { label, route, name } = item;
       const isSelected = route === selectedKey;
       var auth = true;
-      if (identity !== 'Admin' && label === 'User/alls') auth = false;
-      
+      if (identity === 'User' && (label === 'User/alls' || label==='Permissions')) auth = false;
+
       return (
         <CanAccess key={route} resource={name.toLowerCase()}>
           {auth && (
@@ -50,7 +50,7 @@ export const CustomSider = () => {
                     }}
                   />
                 ) : label === 'User/mes' ? (
-                  <Icons.UserOutlined 
+                  <Icons.UserOutlined
                     style={{
                       color: 'black',
                       fontSize: 18,
@@ -99,7 +99,6 @@ export const CustomSider = () => {
   };
 
   return (
-    
     <AntdLayout.Sider
       collapsible
       collapsed={collapsed}

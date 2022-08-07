@@ -213,12 +213,12 @@ export const dataProvider = (apiUrl, httpClient) => ({
 
   custom: async ({
     url,
-    method,
-    filters,
-    sort,
-    payload,
-    query,
-    headers,
+    // method,
+    // filters,
+    // sort,
+    // payload,
+    // query,
+    // headers,
   }) => {
     let httpClientUrl = `${apiUrl}/${url}`;
 
@@ -250,37 +250,53 @@ export const dataProvider = (apiUrl, httpClient) => ({
     //   };
     // }
 
-    const token = store.getState().auth.login.currentUser.access;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    // const token = store.getState().auth.login.currentUser.access;
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
 
-    let axiosResponse;
-    switch (method) {
-      case 'put':
-      case 'post':
-      case 'patch':
-        axiosResponse = await httpClient[method](
-          httpClientUrl,
-          payload,
-          config
-        );
-        break;
-      case 'delete':
-        axiosResponse = await httpClient.delete(
-          httpClientUrl,
-          config
-        );
-        break;
-      default:
-        axiosResponse = await httpClient.get(httpClientUrl, config);
-        break;
+    // let axiosResponse;
+    // switch (method) {
+    //   case 'put':
+    //   case 'post':
+    //   case 'patch':
+    //     axiosResponse = await httpClient[method](
+    //       httpClientUrl,
+    //       payload,
+    //       config
+    //     );
+    //     break;
+    //   case 'delete':
+    //     axiosResponse = await httpClient.delete(
+    //       httpClientUrl,
+    //       config
+    //     );
+    //     break;
+    //   default:
+    //     axiosResponse = await httpClient.get(httpClientUrl, config);
+    //     break;
+    // }
+
+    // const { data } = axiosResponse;
+
+    // return Promise.resolve({ data });
+
+    try {
+      const token = store.getState().auth.login.currentUser.access;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      var { data } = await httpClient.get(`${httpClientUrl}`, config);
+    } catch (error) {
+      console.log(error);
     }
 
-    const { data } = axiosResponse;
-
-    return Promise.resolve({ data });
+    return {
+      data,
+    };
   },
 });
